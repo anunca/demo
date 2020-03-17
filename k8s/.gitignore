@@ -1,0 +1,4 @@
+cloud-config.yaml
+ansible/hosts
+ansible/playbook/k8s-master.yml
+kubernetes/*

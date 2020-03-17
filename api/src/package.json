@@ -1,0 +1,14 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Serverless REST API with DynamoDB and offline support",
+  "repository": "",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.611.0",
+    "uuid": "^3.4.0"
+  },
+  "devDependencies": {
+    "serverless-offline": "^5.12.1"
+  }
+}

@@ -1,0 +1,26 @@
+app.connect:
+	docker-compose exec app sh
+run.connect:
+	docker-compose run --rm --entrypoint sh app
+credential:
+	docker-compose exec app sh -c "sls config credentials -o --profile default --provider aws --key YOUR_AWS_ACCESS_KEY_ID --secret YOUR_AWS_SECRET_ACCESS_KEY"
+print:
+	docker-compose exec app sh -c "sls print"
+package:
+	docker-compose exec app sh -c "sls package"
+remove:
+	docker-compose exec app sh -c "sls remove"
+config:
+	docker-compose config
+build:
+	docker-compose build
+start:
+	docker-compose up -d
+stop:
+	docker-compose down
+restart:
+	make stop && make start
+logs:
+	docker-compose logs -f
+ps:
+	docker-compose ps

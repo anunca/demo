@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+    app:
+        image: anunca/demo-api:dev
+        volumes: 
+            - ./src:/app
+        environment: 
+            SLS_DEBUG: '*'

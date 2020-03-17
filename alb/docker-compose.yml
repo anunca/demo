@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+    app:
+        image: local/alb
+        build: 
+            context: .
+            args: 
+                NODE_VERSION:
+        volumes: 
+            - ./src:/app
+            - node_modules:/app/node_modules
+            - ~/.aws:/root/.aws
+        environment: 
+            SLS_DEBUG:
+        ports: 
+            - "3000:3000"
+volumes:
+    node_modules:

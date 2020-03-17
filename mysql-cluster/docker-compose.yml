@@ -1,0 +1,45 @@
+version: '3.7'
+services:
+  management1:
+    container_name: management1
+    image: mysql/mysql-cluster
+    volumes:
+     - ./management/my.cnf:/etc/my.cnf
+     - ./management/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+    networks:
+      cluster:
+        ipv4_address: 172.20.1.2
+  ndb1:
+    container_name: ndb1
+    image: mysql/mysql-cluster
+    volumes:
+     - ./management/my.cnf:/etc/my.cnf
+     - ./management/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+    networks:
+      cluster:
+        ipv4_address: 172.20.1.3
+  ndb2:
+    container_name: ndb2
+    image: mysql/mysql-cluster
+    volumes:
+     - ./management/my.cnf:/etc/my.cnf
+     - ./management/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+    networks:
+      cluster:
+        ipv4_address: 172.20.1.4
+  mysql1:
+    container_name: mysql1
+    image: mysql/mysql-cluster
+    volumes:
+     - ./management/my.cnf:/etc/my.cnf
+     - ./management/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+    networks:
+      cluster:
+        ipv4_address: 172.20.1.10
+networks:
+  cluster:
+    external:
+      name: cluster
+    ipam:
+      config:
+        - subnet: 172.20.1.0/16

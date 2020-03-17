@@ -1,0 +1,7 @@
+ARG FEDORA_VERSION
+
+FROM $FEDORA_VERSION
+
+RUN dnf -y install snapd; dnf clean all; systemctl enable snapd
+
+CMD [ "/sbin/init" ]

@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+    app:
+        depends_on: 
+            - db
+        build: 
+            context: .
+            args: 
+                NODE_VERSION:
+        ports: 
+            - "3000:3000"
+        environment:
+            DYNAMODB_URL:
+    db:
+        image: $DYNAMODB_VERSION
+        volumes: 
+            - db:/data/db
+        ports: 
+            - "8000:8000"
+        command: -jar DynamoDBLocal.jar -sharedDb -dbPath /data/db
+volumes:
+    db:
