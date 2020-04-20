@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+  master:
+    image: $MYSQL_VERSION
+    ports:
+      - 3306:3306
+    volumes:
+      - data:/bitnami/mysql/data
+    environment:
+      - MYSQL_REPLICATION_MODE=master
+      - MYSQL_REPLICATION_USER=slave
+      - MYSQL_REPLICATION_PASSWORD=slave
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=master
+      - MYSQL_PASSWORD=master
+      - MYSQL_DATABASE=app
+  slave:
+    image: $MYSQL_VERSION
+    ports:
+      - 3306
+    depends_on:
+      - master
+    environment:
+      - MYSQL_REPLICATION_MODE=slave
+      - MYSQL_REPLICATION_USER=slave
+      - MYSQL_REPLICATION_PASSWORD=slave
+      - MYSQL_MASTER_HOST=master
+      - MYSQL_MASTER_PORT_NUMBER=3306
+      - MYSQL_MASTER_ROOT_PASSWORD=root
+volumes: 
+  data:

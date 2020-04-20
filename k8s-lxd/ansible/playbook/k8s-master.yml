@@ -1,0 +1,31 @@
+- hosts: master
+  become: yes
+  tasks:
+    - name: install K8S
+      shell: kubeadm init --pod-network-cidr=10.244.0.0/16 >> k8s_init.txt
+      args:
+        chdir: /home/ansible
+        creates: k8s_init.txt
+
+    - name: create .kube directory
+      become: yes
+      become_user: ansible
+      file:
+        path: /home/ansible/.kube
+        state: directory
+        mode: 0755
+
+    - name: copy admin.conf to user's kube config
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/ansible/.kube/config
+        remote_src: yes
+        owner: ansible
+        
+    - name: install Flannel
+      become: yes
+      become_user: ansible
+      shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml >> flannel_init.txt
+      args:
+        chdir: /home/ansible
+        creates: flannel_init.txt

@@ -1,0 +1,72 @@
+- hosts: master
+  become: yes
+  tasks:
+    - name: create .kube directory
+      become: yes
+      become_user: ubuntu
+      file:
+        path: /home/ubuntu/.kube
+        state: directory
+        mode: 0755
+
+    - name: copy admin.conf to user's kube config
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/ubuntu/.kube/config
+        remote_src: yes
+        owner: ubuntu
+
+    - name: create .kube directory
+      become: yes
+      become_user: ansible
+      file:
+        path: /home/ansible/.kube
+        state: directory
+        mode: 0755
+
+    - name: copy admin.conf to user's kube config
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/ansible/.kube/config
+        remote_src: yes
+        owner: ansible
+
+    - name: create kubeadm config view
+      shell: kubectl config view --raw
+      register: kubeadm_config_view_raw
+
+    - name: set fact to workers
+      set_fact:
+        kubeadm_config_view: "{{ kubeadm_config_view_raw.stdout_lines[0] }}"
+
+- hosts: workers
+  become: yes
+  tasks:
+    - name: create .kube directory
+      become: yes
+      become_user: ubuntu
+      file:
+        path: /home/ubuntu/.kube
+        state: directory
+        mode: 0755
+    
+    #TODO check this
+    - name: copy admin.conf to user's kube config
+      shell: "{{ hostvars['master'].kubeadm_config_view }} > config"
+      args:
+        chdir: /home/ubuntu/.kube
+        creates: config
+
+    - name: create .kube directory
+      become: yes
+      become_user: ansible
+      file:
+        path: /home/ansible/.kube
+        state: directory
+        mode: 0755
+
+    - name: copy admin.conf to user's kube config
+      shell: "{{ hostvars['master'].kubeadm_config_view }} > config"
+      args:
+        chdir: /home/ansible/.kube
+        creates: config

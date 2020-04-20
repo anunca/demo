@@ -1,0 +1,49 @@
+  create:
+    handler: src/api/controller/create.default
+    events:
+      - http:
+          path: user-review
+          method: post
+          cors: true
+  list:
+    handler: src/api/controller/list.default
+    events:
+      - http:
+          path: user-review
+          method: get
+          cors: true
+  get:
+    handler: src/api/controller/get.default
+    events:
+      - http:
+          path: user-review/{id}
+          method: get
+          cors: true
+  update:
+    handler: src/api/controller/update.default
+    events:
+      - http:
+          path: user-review/{id}
+          method: put
+          cors: true
+  delete:
+    handler: src/api/controller/delete.default
+    events:
+      - http:
+          path: user-review/{id}
+          method: delete
+          cors: true
+  count:
+    handler: src/api/controller/count.default
+    events:
+      - http:
+          path: user-review-count
+          method: get
+          cors: true
+  moderate:
+    handler: src/api/controller/moderate.default
+    events:
+      - http:
+          path: user-review/{id}/moderate
+          method: put
+          cors: true

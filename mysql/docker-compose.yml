@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  db:
+    image: local/mysql:${MYSQL_VERSION_NUMBER}
+    build:
+      context: .
+      args:
+        MYSQL_VERSION_NUMBER: ${MYSQL_VERSION_NUMBER}
+        MYSQL_CHARSET:
+        MYSQL_COLLATION:
+    volumes:
+    - db:/var/lib/mysql
+    ports:
+    - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+volumes:
+  db:

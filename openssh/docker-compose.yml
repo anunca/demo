@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  openssh:
+    image: anunca/openssh
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args: 
+        USERNAME:
+    volumes:
+      - ./data:/home/$USERNAME
+    ports:
+      - '2222:22'

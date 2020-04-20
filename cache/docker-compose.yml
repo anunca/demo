@@ -1,0 +1,45 @@
+version: '3.7'
+services:
+    cache:
+        depends_on: 
+            - apache
+            - nginx
+        image: $VARNISH_VERSION
+        tmpfs: 
+            - /var/lib/varnish:exec
+        volumes: 
+            - ./etc/default.vcl:/etc/varnish/default.vcl:ro
+        ports: 
+            - "8000:80"
+    # apache:
+    #     image: $PHP_APACHE_VERSION
+    #     volumes: 
+    #         - ./src:/var/www/html
+    #     ports: 
+    #         - "81:80"
+    apache:
+        build: 
+            context: .
+            dockerfile: Dockerfile.httpd
+            args: 
+                APACHE_VERSION:
+        volumes: 
+            - ./src:/var/www/html
+            # - src_php:/var/www/html
+            - run_php:/var/run/php
+        ports: 
+            - "81:80"
+    php:
+        image: $PHP_VERSION
+        volumes: 
+            - ./etc/php-fpm.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+            - ./src:/var/www/html
+            # - src_php:/var/www/html
+            - run_php:/var/run/php
+    nginx:
+        image: nginx:1.17.8-alpine
+        ports: 
+            - "82:80"
+volumes:
+    src_php:
+    run_php:
