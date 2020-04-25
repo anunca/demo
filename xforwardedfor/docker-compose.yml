@@ -1,0 +1,47 @@
+version: '3.7'
+services: 
+  proxy:
+    depends_on: 
+      - app1
+      - app2
+    image: $NGINX_VERSION
+    volumes: 
+      - ./etc/nginx/nginx.conf:/etc/nginx/nginx.conf
+      # - ./etc/nginx/conf.d:/etc/nginx/conf.d
+      - ./etc/nginx/conf.d/proxy.conf:/etc/nginx/conf.d/default.conf
+      - ./etc/nginx/proxy_params:/etc/nginx/proxy_params
+    networks: 
+      bridge:
+          ipv4_address: 10.0.0.10
+    ports: 
+      - 80:80
+  app1:
+    depends_on: 
+      - app2
+    image: $PHP_APACHE_VERSION
+    volumes: 
+      - ./etc/apache/app1/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./etc/apache/app1/ports.conf:/etc/apache2/ports.conf
+      - ./src/app1:/var/www/html
+    networks: 
+      bridge:
+        ipv4_address: 10.0.0.20
+    ports: 
+      - 81:81
+  app2:
+    image: $PHP_APACHE_VERSION
+    volumes: 
+      - ./etc/apache/app2/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./etc/apache/app2/ports.conf:/etc/apache2/ports.conf
+      - ./src/app2:/var/www/html
+    networks: 
+      bridge:
+          ipv4_address: 10.0.0.30
+    ports: 
+      - 82:82
+networks:
+  bridge:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/16

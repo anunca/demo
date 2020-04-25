@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  app:
+    image: anunca/ch:node
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args: 
+        NODE_VERSION:
+    ports: 
+      - 80:80
+      

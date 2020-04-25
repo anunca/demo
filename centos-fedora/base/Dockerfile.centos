@@ -1,0 +1,7 @@
+FROM anunca/demo:centos-base
+
+RUN yum -yq install epel-release\
+    && yum -yq upgrade\
+    && yum -yq install snapd; yum clean all; systemctl enable snapd
+
+CMD ["/usr/sbin/init"]

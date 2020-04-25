@@ -1,0 +1,46 @@
+version: '3.7'
+services:
+  nfs:
+    image: anunca/nfs
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args: 
+        UBUNTU_VERSION:
+        NFS_DIRECTORY:
+        NFS_HOST:
+        NFS_OPTIONS:
+    # cap_add:
+    #   - ALL
+    privileged: true
+    ports:
+      - 2049
+    volumes:
+      - data:$NFS_DIRECTORY
+    environment:
+      NFS_DIRECTORY:
+      NFS_HOST:
+      NFS_OPTIONS:
+  nfs-alpine:
+    image: anunca/nfs-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile.alpine
+      args: 
+        ALPINE_VERSION:
+        NFS_DIRECTORY:
+        NFS_HOST:
+        NFS_OPTIONS:
+    # cap_add:
+    #   - ALL
+    privileged: true
+    ports:
+      - 2049
+    volumes:
+      - data:$NFS_DIRECTORY
+    environment:
+      NFS_DIRECTORY:
+      NFS_HOST:
+      NFS_OPTIONS:
+volumes: 
+  data:

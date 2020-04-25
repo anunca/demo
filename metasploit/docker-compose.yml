@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+app:
+  build:
+    context: .
+    dockerfile: Dockerfile
+  image: anunca/demo:metasploit
+  tty: true
+  db:
+    image: postgres:12.1-alpine
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: db
+    volumes: 
+      - db:/var/lib/postgresql/data
+volumes: 
+  db:

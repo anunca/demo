@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  pure-ftpd:
+    image: anunca/pure-ftpd
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - './data:/home/ftp'
+      - etc:/etc/pure-ftpd
+    # ports:
+    #   - '20:20'
+    #   - '21:21'
+    privileged: true
+    working_dir: /home/ftp/$USERNAME
+    network_mode: host
+volumes: 
+  etc:

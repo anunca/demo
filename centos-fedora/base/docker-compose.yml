@@ -1,0 +1,23 @@
+version: '3.7'
+services:
+    centos-base:
+        image: anunca/demo:centos-base
+        build:
+            context: .
+            dockerfile: Dockerfile.centos.base
+            args: 
+                CENTOS_VERSION:
+    centos:
+        depends_on: 
+            - centos-base
+        image: anunca/demo-centos-snap
+        build:
+            context: .
+            dockerfile: Dockerfile.centos
+    fedora:
+        image: anunca/demo-fedora-snap
+        build:
+            context: .
+            dockerfile: Dockerfile.fedora
+            args: 
+                FEDORA_VERSION:

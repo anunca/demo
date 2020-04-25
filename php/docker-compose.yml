@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  web:
+    volumes:
+      - ./src:/var/www/html
+      - php_var:/var/www/html/var
+      - php_vendor:/var/www/html/vendor
+  app:
+    build:
+      target: dev
+      image: anunca/demo:php
+    volumes:
+      - ./src:/var/www/html
+      - php_var:/var/www/html/var
+      - php_vendor:/var/www/html/vendor
+    environment:
+      APP_ENV: dev
+volumes: 
+  php_var:
+  php_vendor:
+    

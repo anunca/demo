@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+    master1:
+        image: anunca/demo:master1
+        build: 
+            context: .
+            dockerfile: Dockerfile.master
+        volumes: 
+            - /sys/fs/cgroup:/sys/fs/cgroup:ro
+            - ./multipass:/root/multipass
+        privileged: true
+        working_dir: /root/multipass
+    node1:
+        depends_on: 
+            - master1
+        image: anunca/demo:node1
+        build: 
+            context: .
+            dockerfile: Dockerfile.node
+        volumes: 
+            - /sys/fs/cgroup:/sys/fs/cgroup:ro
+            - ./multipass:/root/multipass
+        privileged: true
+        working_dir: /root/multipass
+        
