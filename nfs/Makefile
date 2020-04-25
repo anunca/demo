@@ -14,7 +14,5 @@ ps:
 	docker-compose ps
 logs:
 	docker-compose logs -f
-shell.server:
-	docker-compose exec server sh
-shell.client:
-	docker-compose exec client sh
+shell:
+	docker-compose exec nfs sh

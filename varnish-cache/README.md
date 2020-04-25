@@ -1,6 +1,6 @@
-# cache
+# varnish-cache
 
-```
+```sh
 make build
 make push
 make pull

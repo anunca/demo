@@ -10,4 +10,5 @@ services:
     volumes:
       - ./data:/home/$USERNAME
     ports:
-      - '2222:22'
+      - 2222:22
+      

@@ -20,3 +20,4 @@ shell:
 	docker-compose exec app sh
 run:
 	docker-compose run --rm --entrypoint sh app
+	

@@ -9,3 +9,4 @@ services:
         PHP_VERSION:
     ports: 
       - 80:80
+      

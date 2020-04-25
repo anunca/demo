@@ -20,8 +20,8 @@ make start
 #Check container is running
 make ps
 #Get into container
-make connect.master1
-make connect.node1
+make shell.master1
+make shell.node1
 ```
 
 ## Usage

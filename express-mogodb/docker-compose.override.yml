@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  app:
+    build: 
+      context: .
+      args: 
+        NODE_VERSION:
+    depends_on: 
+      - db
+    environment:
+      DATABASE_URL:
+  db:
+    image: $MONGO_VERSION
+    volumes: 
+      - db:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: todo
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+volumes:
+  db:

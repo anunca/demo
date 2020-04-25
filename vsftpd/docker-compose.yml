@@ -1,12 +1,12 @@
 version: '3.7'
 services:
   vsftpd:
-    image: anunca/vsftpd
+    image: anunca/demo:vsftpd
     build: .
     restart: always
     volumes:
       - ./data/vsftpd:/var/vsftpd
     ports:
-      - '20:20'
-      - '21:21'
+      - 20:20
+      - 21:21
     tty: true

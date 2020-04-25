@@ -10,3 +10,4 @@ services:
         ALPINE_VERSION:
     ports: 
       - 80:80
+      

@@ -27,3 +27,4 @@ runcmd:
   - systemctl start docker
   - systemctl enable docker
   - usermod -aG docker ubuntu
+  

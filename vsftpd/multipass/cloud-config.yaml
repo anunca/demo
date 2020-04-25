@@ -42,3 +42,4 @@ runcmd:
     echo "pasv_promiscuous=YES" >> /etc/vsftpd/vsftpd.conf &&\
     echo "local_root=/var/vsftpd" >> /etc/vsftpd/vsftpd.conf
   - systemctl restart vsftpd
+  

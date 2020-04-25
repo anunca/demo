@@ -1,4 +1,0 @@
-*
-!/src/*
-src/node_modules/
-src/.serverless/

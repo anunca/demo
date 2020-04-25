@@ -14,3 +14,4 @@ logs:
 	docker-compose logs -f
 shell:
 	docker-compose exec openssh bash
+	

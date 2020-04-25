@@ -10,7 +10,7 @@ stop:
 	docker-compose down
 ps:
 	docker-compose ps
-connect:
+shell:
 	docker-compose exec vsftpd bash
 user.add:
 	sh/user_add.sh tarlouze

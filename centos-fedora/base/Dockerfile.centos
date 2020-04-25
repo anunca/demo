@@ -1,4 +1,4 @@
-FROM anunca/centos:base
+FROM anunca/demo:centos-base
 
 RUN yum -yq install epel-release\
     && yum -yq upgrade\

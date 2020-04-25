@@ -18,7 +18,7 @@ make start
 #Check container is running
 make ps
 #Get into container
-make connect
+make shell
 ```
 
 ## Usage

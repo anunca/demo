@@ -1,1 +1,0 @@
-aws dynamodb describe-table --table-name user-review --endpoint-url http://localhost:8000

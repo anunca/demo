@@ -8,3 +8,4 @@ stop:
 	multipass stop ftp
 shell:
 	multipass shell ftp
+	

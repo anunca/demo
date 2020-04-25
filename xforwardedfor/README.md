@@ -1,6 +1,6 @@
 # demo
 
-```
+```sh
 make build
 make push
 make pull

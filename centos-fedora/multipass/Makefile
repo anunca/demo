@@ -6,3 +6,4 @@ launch.node:
 	multipass launch -c6 -m8G -d128G -nk8s-node --cloud-init cloud-config.yaml
 mount.node:
 	multipass mount Docker k8s-node
+	
