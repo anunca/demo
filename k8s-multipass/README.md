@@ -5,12 +5,12 @@
 ### install and launch vms
 ```sh
 make multipass.install \
-&& make launch
+&& make cluster.launch
 ```
 
 ### delete cluster
 ```sh
-make cluster.remove
+make cluster.purge
 ```
 
 ## Ansible install and config

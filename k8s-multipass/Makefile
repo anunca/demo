@@ -2,11 +2,16 @@ multipass.install:
 	sudo snap install multipass --classic
 cloud.config:
 	bash sh/init-cloud-config.sh
-launch:
+cluster.launch:
 	make cloud.config
 	multipass launch -c4 -m16G -nk8s-master 16.04 --cloud-init multipass/cloud-config.yaml
 	multipass launch -c2 -m8G -nk8s-worker1 16.04 --cloud-init multipass/cloud-config.yaml
 	multipass launch -c2 -m8G -nk8s-worker2 16.04 --cloud-init multipass/cloud-config.yaml
+	make list
+cluster.purge:
+	make stop
+	make delete
+	make purge
 	make list
 start:
 	multipass start k8s-master k8s-worker1 k8s-worker2
@@ -20,11 +25,6 @@ purge:
 	multipass purge
 list:
 	multipass list
-cluster.remove:
-	make stop
-	make delete
-	make purge
-	make list
 ansible.install:
 	sudo apt update
 	sudo apt install -y software-properties-common
