@@ -1,4 +1,0 @@
-multipass/cloud-config.yaml
-ansible/hosts
-kubernetes/*-ingress.yaml
-lb/haproxy/haproxy.cfg
