@@ -10,7 +10,7 @@ services:
     environment:
       DATABASE_URL:
   db:
-    image: $MONGO_VERSION
+    image: $MONGODB_VERSION
     volumes: 
       - db:/data/db
     environment:

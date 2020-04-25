@@ -1,4 +1,4 @@
-# express-mogodb
+# express-mongodb
 
 ```sh
 #dev version
