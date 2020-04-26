@@ -4,15 +4,19 @@ build:
 	docker-compose build
 push:
 	docker-compose push
+pull:
+	docker-compose pull
 start:
 	docker-compose up -d
 stop:
 	docker-compose down
 restart:
 	docker-compose restart
-ps:
-	docker-compose ps
+run:
+	docker-compose run --rm --entrypoint sh app
 logs:
 	docker-compose logs -f
+ps:
+	docker-compose ps
 shell:
 	docker-compose exec nfs sh

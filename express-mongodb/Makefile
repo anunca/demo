@@ -1,3 +1,5 @@
+config:
+	docker-compose config
 build:
 	docker-compose build
 push:
@@ -8,6 +10,16 @@ start:
 	docker-compose up -d
 stop:
 	docker-compose down
+restart:
+	docker-compose restart
+logs:
+	docker-compose logs -f
+ps:
+	docker-compose ps
+shell:
+	docker-compose exec app sh
+run:
+	docker-compose run --rm --entrypoint sh app
 build.p:
 	docker-compose -f docker-compose.override.yml -f docker-compose.prod.yml build
 push.p:

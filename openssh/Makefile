@@ -1,17 +1,22 @@
-pull:
-	docker-compose pull
+config:
+	docker-compose config
 build:
 	docker-compose build
 push:
 	docker-compose push
+pull:
+	docker-compose pull
 start:
 	docker-compose up -d
 stop:
 	docker-compose down
-ps:
-	docker-compose ps
+restart:
+	docker-compose restart
+run:
+	docker-compose run --rm --entrypoint sh app
 logs:
 	docker-compose logs -f
+ps:
+	docker-compose ps
 shell:
-	docker-compose exec openssh bash
-	
+	docker-compose openssh app sh
