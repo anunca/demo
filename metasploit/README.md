@@ -2,15 +2,15 @@
 
 ## install
 ```sh
-docker-compose build
-docker-compose push
-docker-compose pull
-docker-compose up -d
+make build
+make push
+make pull
+make start
 ```
 
 ## config
 ```sh
-docker-compose exec app
+make shell
 
 msfdb init
 ```

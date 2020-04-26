@@ -1,1 +1,1 @@
-# container-hostname
+# hostname

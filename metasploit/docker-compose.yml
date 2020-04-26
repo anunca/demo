@@ -1,11 +1,11 @@
 version: '3.7'
 services:
-app:
-  build:
-    context: .
-    dockerfile: Dockerfile
-  image: anunca/demo:metasploit
-  tty: true
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: anunca/demo:metasploit
+    tty: true
   db:
     image: postgres:12.1-alpine
     environment:
