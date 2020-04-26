@@ -1,12 +1,13 @@
 version: '3.7'
 services:
   app:
-    image: anunca/ch:node
+    image: anunca/demo:hostname-go
     build: 
       context: .
       dockerfile: Dockerfile
       args: 
-        NODE_VERSION:
+        GO_VERSION:
+        ALPINE_VERSION:
     ports: 
       - 80:80
       

@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   app:
-    image: anunca/ch:php
+    image: anunca/demo:hostname-php
     build: 
       context: .
       dockerfile: Dockerfile
