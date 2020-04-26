@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   nfs:
-    image: anunca/nfs
+    image: anunca/demo:nfs
     build:
       context: .
       dockerfile: Dockerfile
@@ -22,7 +22,7 @@ services:
       NFS_HOST:
       NFS_OPTIONS:
   nfs-alpine:
-    image: anunca/nfs-alpine
+    image: anunca/demo:nfs-alpine
     build:
       context: .
       dockerfile: Dockerfile.alpine
