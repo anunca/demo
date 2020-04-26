@@ -1,7 +1,7 @@
 version: '3.7'
 services:
     app:
-        image: anunca/demo-awscli
+        image: anunca/demo:awscli
         build: 
             context: .
             args: 

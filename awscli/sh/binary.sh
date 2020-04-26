@@ -2,4 +2,4 @@
 
 docker run --network host --rm \
     -v $HOME/.aws:/root/.aws \
-    anunca/demo-awscli "$@"
+    anunca/demo:awscli "$@"

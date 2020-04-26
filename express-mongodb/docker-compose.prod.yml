@@ -12,7 +12,7 @@ services:
   app:
     build: 
       target: prod
-    image: anunca/demo-express-mongodb:prod
+    image: anunca/demo:express-mongodb:prod
     environment:
       NODE_ENV: production
     restart: always

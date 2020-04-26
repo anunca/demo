@@ -10,12 +10,12 @@ services:
     centos:
         depends_on: 
             - centos-base
-        image: anunca/demo-centos-snap
+        image: anunca/demo:centos-snap
         build:
             context: .
             dockerfile: Dockerfile.centos
     fedora:
-        image: anunca/demo-fedora-snap
+        image: anunca/demo:fedora-snap
         build:
             context: .
             dockerfile: Dockerfile.fedora
