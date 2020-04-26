@@ -23,19 +23,19 @@ shell:
 	docker-compose exec app sh
 #prod
 config.p:
-	docker-compose -f docker-compose.prod.yml config
+	docker-compose -f docker-compose.override.yml -f docker-compose.prod.yml config
 build.p:
-	docker-compose -f docker-compose.prod.yml build
+	docker-compose -f docker-compose.override.yml -f docker-compose.prod.yml build
 push.p:
-	docker-compose -f docker-compose.prod.yml push
+	docker-compose -f docker-compose.override.yml -f docker-compose.prod.yml push
 pull.p:
-	docker-compose -f docker-compose.prod.yml pull
+	docker-compose -f docker-compose.override.yml -f docker-compose.prod.yml pull
 start.p:
-	docker-compose -f docker-compose.prod.yml up -d
+	docker-compose -f docker-compose.override.yml -f docker-compose.prod.yml up -d
 stop.p:
-	docker-compose -f docker-compose.prod.yml stop
+	docker-compose -f docker-compose.override.yml -f docker-compose.prod.yml stop
 restart.p:
-	docker-compose -f docker-compose.prod.yml restart
+	docker-compose -f docker-compose.override.yml -f docker-compose.prod.yml restart
 run.p:
-	docker-compose -f docker-compose.prod.yml run --rm --entrypoint sh app
+	docker-compose -f docker-compose.override.yml -f docker-compose.prod.yml run --rm --entrypoint sh app
 	
