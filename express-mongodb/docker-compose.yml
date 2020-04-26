@@ -3,7 +3,7 @@ services:
   app:
     build: 
       target: dev
-    image: anunca/demo:express-mongodb:dev
+    image: anunca/demo:express-mongodb
     volumes: 
       - ./src:/app
     ports: 
