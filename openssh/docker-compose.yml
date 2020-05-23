@@ -11,4 +11,3 @@ services:
       - ./data:/home/$USERNAME
     ports:
       - '2222:22'
-      
