@@ -1,0 +1,17 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+    config.vm.define "k8s-master-centos8" do |master|
+        master.vm.box = "centos/8"
+        master.vm.hostname = "master.k8s.local"
+        master.vm.network "private_network", ip: "172.16.0.10"
+        master.vm.provider "virtualbox" do |v|
+            v.name = "k8s-master-centos8"
+            v.memory = 49152
+            v.cpus = 12
+        end
+    end
+    
+end
