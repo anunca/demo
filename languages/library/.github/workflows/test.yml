@@ -1,0 +1,32 @@
+name: Test
+
+on:
+    workflow_dispatch:
+
+jobs:
+  job1:
+    runs-on: ubuntu-24.04
+    outputs:
+        BUCKET_NAME: ${{ steps.job1.outputs.BUCKET_NAME }}
+    steps:
+      - name: Run Job 1
+        id: job1
+        run: |
+          BUCKET_NAME=app-demo-release
+          echo "$BUCKET_NAME"
+          echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_ENV
+          echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_OUTPUT
+
+  job2:
+    runs-on: ubuntu-24.04
+    needs: job1
+    steps:
+      - name: Run Job 2
+        run: |
+          BUCKET_NAME="${{ needs.job1.outputs.BUCKET_NAME }}"
+          echo "$BUCKET_NAME"
+          echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_ENV
+      - name: Run Job 2 echo bucket env
+        run: |
+          BUCKET_NAME="${{ env.BUCKET_NAME }}"
+          echo "$BUCKET_NAME"

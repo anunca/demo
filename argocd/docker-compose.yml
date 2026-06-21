@@ -1,0 +1,5 @@
+services:
+  app:
+    image: register.app.internal/nginx-app:dev
+    build:
+      target: dev

@@ -1,0 +1,9 @@
+services:
+  web:
+    image: demo/caddy-web:prod
+    build:
+      target: prod
+  app:
+    image: demo/caddy-app:prod
+    build:
+      target: prod

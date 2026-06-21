@@ -1,0 +1,44 @@
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+
+users:
+- name: ubuntu
+  lock_passwd: true
+  sh: /bin/bash
+  groups:
+    - ubuntu
+  sudo:
+    - ALL=(ALL) NOPASSWD:ALL
+
+packages:
+  - vsftpd
+
+runcmd:
+  - apt update
+  - systemctl enable --now vsftpd
+  - useradd -m user
+  - echo 'user:user' | chpasswd
+  - mkdir /var/vsftpd
+  - chmod 777 /var/vsftpd
+  - |
+    sed -i 's/#write_enable=YES/write_enable=YES/g' /etc/vsftpd/vsftpd.conf &&\
+    sed -i 's/anonymous_enable=YES/anonymous_enable=NO/g' /etc/vsftpd/vsftpd.conf &&\
+    sed -i 's/#local_umask=022/local_umask=022/g' /etc/vsftpd/vsftpd.conf &&\
+    sed -i 's/#ftpd_banner=Welcome to blah FTP service./ftpd_banner=Welcome/g' /etc/vsftpd/vsftpd.conf &&\
+    sed -i 's/#chroot_local_user=YES/chroot_local_user=NO/g' /etc/vsftpd/vsftpd.conf &&\
+    sed -i 's/#chroot_list_enable=YES/chroot_list_enable=YES/g' /etc/vsftpd/vsftpd.conf &&\
+    sed -i 's|#chroot_list_file=/etc/vsftpd/chroot_list|chroot_list_file=/etc/vsftpd/chroot_list|g' /etc/vsftpd/vsftpd.conf &&\
+    sed -i 's|root||g' /etc/vsftpd/user_list &&\
+    sed -i 's|root||g' /etc/vsftpd/ftpusers &&\
+    echo 'root' >> /etc/vsftpd/chroot_list &&\
+    echo "background=NO" >> /etc/vsftpd/vsftpd.conf &&\
+    echo "allow_writeable_chroot=YES" >> /etc/vsftpd/vsftpd.conf &&\
+    echo "local_max_rate=O" >> /etc/vsftpd/vsftpd.conf &&\
+    echo "max_per_ip=0" >> /etc/vsftpd/vsftpd.conf &&\
+    echo "ascii_upload_enable=YES" >> /etc/vsftpd/vsftpd.conf &&\
+    echo "ascii_download_enable=YES" >> /etc/vsftpd/vsftpd.conf &&\
+    echo "pasv_promiscuous=YES" >> /etc/vsftpd/vsftpd.conf &&\
+    echo "local_root=/var/vsftpd" >> /etc/vsftpd/vsftpd.conf
+  - systemctl restart vsftpd
+  

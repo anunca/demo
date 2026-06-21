@@ -1,0 +1,41 @@
+services:
+    certbot:
+        image: $CERTBOT_VERSION
+        entrypoint: certbot
+        command:
+            - certonly
+            - -n
+            - --agree-tos
+            - -m $EMAIL
+            - --dns-route53
+            - -d $DOMAINS
+            # - --dry-run
+        volumes:
+            - ~/.aws:/root/.aws
+            - ./etc/letsencrypt:/etc/letsencrypt
+            - ./var/log/letsencrypt:/var/log/letsencrypt
+    nginx:
+        image: $NGINX_VERSION
+        volumes:
+            - ./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - ./etc/letsencrypt:/etc/letsencrypt
+            - ./src/nginx:/var/www/html
+        ports:
+            - 80:80
+            - 443:443
+    httpd:
+        image: demo/certbot:httpd
+        build:
+            context: .
+            dockerfile: httpd.Dockerfile
+            args:
+                HTTPD_VERSION:
+        volumes:
+            - ./etc/httpd/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
+            - ./etc/letsencrypt:/etc/letsencrypt
+            - ./src/httpd:/var/www/html
+        environment:
+            - name=value
+        ports:
+            - 80:80
+            - 443:443

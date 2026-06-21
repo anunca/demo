@@ -1,0 +1,13 @@
+services:
+  openssh:
+    image: registry.$DOMAIN_NAME/openssh
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        OS_VERSION:
+        USERNAME:
+    volumes:
+      - ./data:/home/$USERNAME
+    ports:
+      - '2222:22'

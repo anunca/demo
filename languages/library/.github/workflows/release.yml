@@ -1,0 +1,254 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: 'Select project'
+        required: true
+        default: library
+        type: choice
+        options:
+          - library
+      version:
+        description: 'Enter your release version'
+        required: true
+
+env:
+  BUCKET_NAME: app-demo-release-${{ inputs.project }}
+  AWS_REGION: eu-west-3
+
+jobs:
+  validate-version:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - id: validate-version
+        name: Validate version string
+        run: |
+          VERSION="${{ inputs.version }}"
+          if [[ "$VERSION" =~ ^([^.]+\.){4}[^.]+$ ]]; then
+            ROOT_VERSION=$(echo "$VERSION" | awk -F '.' '{OFS="."; $5=""; sub(/\.$/, ""); print}')
+
+            ROOT_VERSION="${{ inputs.project }}_$ROOT_VERSION"
+            echo "ROOT_VERSION=$ROOT_VERSION" >> $GITHUB_ENV
+            echo "ROOT_VERSION=$ROOT_VERSION" >> $GITHUB_OUTPUT
+
+            NEW_VERSION="${{ inputs.project }}_$VERSION"
+            echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+            echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "Error: The string '$VERSION' does not have exactly 5 sections."
+            exit 1
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Check if new version exists in the bucket
+        run: |
+          if aws s3api list-objects-v2 --bucket ${{ env.BUCKET_NAME }} --prefix rc/${{ env.NEW_VERSION }} --max-items 1 | grep -q "Contents"; then
+            echo "Folder exists: ${{ env.NEW_VERSION }}"
+            exit 1
+          fi
+
+    outputs:
+      ROOT_VERSION: ${{ steps.validate-version.outputs.ROOT_VERSION }}
+      NEW_VERSION: ${{ steps.validate-version.outputs.NEW_VERSION }}
+
+  build-release:
+    needs: validate-version
+
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:    
+      - name: Set env
+        run: |
+          echo "NEW_VERSION=${{ needs.validate-version.outputs.NEW_VERSION }}" >> $GITHUB_ENV
+          RELEASE_PATH="$HOME/${{ inputs.project }}-release"
+          echo "RELEASE_PATH=$RELEASE_PATH" >> $GITHUB_ENV
+
+      - name: Checkout ${{ inputs.project }}
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          repository: ${{ github.repository_owner }}/${{ inputs.project }}
+          token: ${{ secrets.GHA }}
+
+      - name: Authenticate with GitHub private repositories
+        run: composer config --global github-oauth.github.com ${{ secrets.GHA }}
+
+      - name: Install PHP dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Verify Node.js version
+        run: node -v
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify Node.js version
+        run: node -v
+
+      - name: Authenticate with GitHub Packages NPM
+        run: |
+          echo "@anunca:registry=https://npm.pkg.github.com/" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GHA }}" >> .npmrc
+
+      - name: Install and Build Node dependencies
+        run: npm ci
+
+      - name: Update version file (EVSE)
+        if: ${{ inputs.project == 'library' }}
+        run: |
+          VERSION="${{ inputs.version }}"
+          VERSION_DATE=$(date +"%d/%m/%Y")
+          VERSION_TIME=$(date +"%d/%m/%Y %H:%M")
+          
+          cat <<EOF > version
+          [VERSION]
+          $VERSION
+          $VERSION_DATE
+
+          // \$Date: $VERSION_TIME $
+          // \$Revision: $
+
+          [MD5]
+          EOF
+
+      - name: Update release file (EVSA)
+        if: ${{ inputs.project == 'evsa' }}
+        run: |
+          VERSION="${{ inputs.version }}"
+          VERSION_DATE=$(date +"%Y.%m.%d")
+          VERSION_TIME=$(date -u +"%Y-%m-%dT%H:%M:%S.%3NZ")
+
+          cat <<EOF > release
+          // $Revision $VERSION $
+          // $Date $VERSION_TIME $
+          appsVersionInfo.name = "$VERSION";
+          appsVersionInfo.evapps = "$VERSION"; // anunca Service Apps Version
+          appsVersionInfo.evsmapi = "$VERSION"; // anunca Service Manager API version
+          appsVersionInfo.evsm = "$VERSION"; // anunca Service Manager Version
+          appsVersionInfo.db = "$VERSION"; // anunca Service Apps DB Version
+          appsVersionInfo.build = "$VERSION_DATE"; // anunca Service Apps Internal Version
+          EOF
+
+      - name: Configure Git
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create and Push Branch
+        run: |
+          git checkout -b ${{ inputs.version }}
+          git push --set-upstream origin ${{ inputs.version }}
+
+      - name: Add file version (EVSE)
+        if: ${{ inputs.project == 'library' }}
+        run: git add version
+
+      - name: Add file release (EVSA)
+        if: ${{ inputs.project == 'evsa' }}
+        run: git add release
+
+      - name: Commit and Push Changes
+        run: |
+          git commit -m "Release version to ${{ inputs.version }}"
+          git push
+
+      - name: Create Pull Request for release version file
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create --title "Release version to ${{ inputs.version }}" \
+            --body "Automated release version to ${{ inputs.version }}" \
+            --head "${{ inputs.version }}" \
+            --base ${{ github.event.repository.default_branch }}
+
+      - name: Composer create new release
+        run: composer archive --format tar.gz --file ${{ env.NEW_VERSION }} --dir ${{ env.RELEASE_PATH }}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ inputs.project }}-release"
+          path: ${{ env.RELEASE_PATH }}
+          retention-days: 1
+
+    outputs:
+      ROOT_VERSION: ${{ needs.validate-version.outputs.ROOT_VERSION }}
+      NEW_VERSION: ${{ needs.validate-version.outputs.NEW_VERSION }}
+
+  s3-release:
+    needs: build-release
+
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Set env
+        run: |
+          ROOT_VERSION="${{ needs.build-release.outputs.ROOT_VERSION }}"
+          NEW_VERSION="${{ needs.build-release.outputs.NEW_VERSION }}"
+          echo "ROOT_VERSION=$ROOT_VERSION" >> $GITHUB_ENV
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: "${{ inputs.project }}-release"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Download root version
+        run: aws s3 cp "s3://${{ env.BUCKET_NAME }}/rc/${{ env.ROOT_VERSION }}" "./${{ env.ROOT_VERSION }}"
+
+      - name: Extract root version
+        run: tar xfz ${{ env.ROOT_VERSION }} -C .
+
+      - name: Remove root version tar
+        run: rm ${{ env.ROOT_VERSION }}
+
+      - name: Set env for fix folder version
+        run: |
+          FIX_ROOT_FOLDER=${{ env.ROOT_VERSION }}
+          FIX_NEW_FOLDER=${{ env.NEW_VERSION }}
+          FIX_ROOT_FOLDER="Fix ${FIX_ROOT_FOLDER#${{ inputs.project }}_}"
+          FIX_NEW_FOLDER="Fix ${FIX_NEW_FOLDER#${{ inputs.project }}_}"
+          echo "FIX_ROOT_FOLDER=$FIX_ROOT_FOLDER" >> $GITHUB_ENV
+          echo "FIX_NEW_FOLDER=$FIX_NEW_FOLDER" >> $GITHUB_ENV
+
+      - name: Rename root version with new version
+        run: mv "${{ env.FIX_ROOT_FOLDER }}" "${{ env.FIX_NEW_FOLDER }}"
+
+      - name: Update WWW folder with new release
+        run: |
+          WWW_FOLDER="${{ env.FIX_NEW_FOLDER }}/WWW"
+          rm -rf "$WWW_FOLDER"
+          mkdir "$WWW_FOLDER"
+          tar xfz "${{ env.NEW_VERSION }}.tar.gz" -C "$WWW_FOLDER"
+
+      - name: Tar gunzip folder new version
+        run: |
+          TAR_FILE="${{ env.NEW_VERSION }}.tar.gz"
+          tar cfz $TAR_FILE "${{ env.FIX_NEW_FOLDER }}"
+          rm -rf "${{ env.FIX_NEW_FOLDER }}"
+          mv $TAR_FILE ${{ env.NEW_VERSION }}
+
+      - name: Upload release to S3
+        run: aws s3 cp "./${{ env.NEW_VERSION }}" "s3://${{ env.BUCKET_NAME }}/rc/${{ env.NEW_VERSION }}"

@@ -1,0 +1,24 @@
+services:
+  nfs:
+    image: registry.$DOMAIN_NAME/nfs
+    build:
+      context: .
+      dockerfile: $DOCKERFILE
+      args:
+        OS_VERSION:
+        NFS_DIRECTORY:
+        NFS_HOST:
+        NFS_OPTIONS:
+          # cap_add:
+          #   - ALL
+    privileged: true
+    ports:
+      - 2049
+    volumes:
+      - data:$NFS_DIRECTORY
+    environment:
+      NFS_DIRECTORY:
+      NFS_HOST:
+      NFS_OPTIONS:
+volumes:
+  data:

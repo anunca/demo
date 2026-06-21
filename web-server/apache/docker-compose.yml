@@ -1,0 +1,9 @@
+services:
+  app:
+    image: test/app:dev
+    build:
+      target: dev
+    volumes:
+      - ./etc/apache2/apache2.conf:/etc/apache2/apache2.conf
+      - ./etc/apache2/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./src:/var/www/html

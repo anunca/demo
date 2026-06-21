@@ -1,0 +1,10 @@
+services:
+  app:
+    image: registry.$DOMAIN_NAME/hostname-node
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_IMAGE:
+    ports:
+      - 80:80

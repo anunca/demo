@@ -1,0 +1,44 @@
+name: Cleanup Packages
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+
+    - name: Authenticate with GitHub
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: echo "GitHub authenticated"
+
+    - name: List and delete old packages
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "Fetching package list..."
+        gh api -H "Accept: application/vnd.github+json" \
+          /user/packages/npm/library/versions \
+          | jq -c '.[] | select(.name | contains("-"))' \
+          | while read package; do
+              package_name=$(echo "$package" | jq -r '.name')
+              last_updated=$(echo "$package" | jq -r '.updated_at')
+              package_id=$(echo "$package" | jq -r '.id')
+
+              echo "Deleting package $package_name (updated at $last_updated)..."
+              gh api -X DELETE /user/packages/npm/library/versions/${package_id}
+          done

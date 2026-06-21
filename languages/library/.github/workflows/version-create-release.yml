@@ -1,0 +1,42 @@
+name: Version Create Release
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  version-create-release:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.title, 'Version bump to')
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Get current version from composer.json
+      run: |
+        current_version=$(jq -r '.version' composer.json)
+        echo "current_version=$current_version" >> $GITHUB_ENV
+
+    - name: Fetch all tags
+      run: git fetch --tags
+
+    - name: Check if tag exists
+      run: |
+        TAG_NAME="${{ env.current_version }}"
+        if git rev-parse "refs/tags/$TAG_NAME" >/dev/null 2>&1; then
+          echo "tag_exists=true" >> $GITHUB_ENV
+        else
+          echo "tag_exists=false" >> $GITHUB_ENV
+        fi
+
+    - name: Create GitHub Release
+      if: env.tag_exists == 'false'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: gh release create "${{ env.current_version }}" --generate-notes

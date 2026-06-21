@@ -1,0 +1,87 @@
+name: Version Bump
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Select version type to increment'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  version-bump:
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Get current version from composer.json
+      run: |
+        current_version=$(jq -r '.version' composer.json)
+        echo "current_version=$current_version" >> $GITHUB_ENV
+
+    - name: Increment version
+      run: |
+        current_version=${{ env.current_version }}
+        version_type="${{ github.event.inputs.version_type }}"
+
+        IFS='.' read -r major minor patch <<< "$current_version"
+
+        case "$version_type" in
+          major)
+            major=$((major + 1))
+            minor=0
+            patch=0
+            ;;
+          minor)
+            minor=$((minor + 1))
+            patch=0
+            ;;
+          patch)
+            patch=$((patch + 1))
+            ;;
+        esac
+
+        new_version="$major.$minor.$patch"
+        echo "new_version=$new_version" >> $GITHUB_ENV
+
+    - name: Update composer.json with new version
+      run: |
+        new_version=${{ env.new_version }}
+        sed -i "s/\"version\": \".*\"/\"version\": \"$new_version\"/" composer.json
+
+    - name: Configure Git
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Create and Push Branch
+      run: |
+        git checkout -b version-bump/${{ env.new_version }}
+        git push --set-upstream origin version-bump/${{ env.new_version }}
+
+    - name: Push composer.json for version bump
+      run: |
+        git add composer.json
+        git commit -m "Version bump to ${{ env.new_version }}"
+        git push
+
+    - name: Create Pull Request for version bump
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh pr create --title "Version bump to ${{ env.new_version }}" \
+          --body "Automated version bump to ${{ env.new_version }}" \
+          --head "version-bump/${{ env.new_version }}" \
+          --base ${{ github.event.repository.default_branch }}
+  

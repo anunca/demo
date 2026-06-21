@@ -1,0 +1,34 @@
+name: Auto-Assign CODEOWNERS as Assignees
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  assign-codeowners:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Assign reviewers as assignees
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+
+            const reviewers = pr.requested_reviewers.map(r => r.login);
+            const existingAssignees = pr.assignees.map(a => a.login);
+
+            const toAssign = reviewers.filter(r => !existingAssignees.includes(r));
+
+            if (toAssign.length > 0) {
+              await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                assignees: toAssign
+              });
+              console.log(`Assigned: ${toAssign.join(', ')}`);
+            } else {
+              console.log("No new assignees needed.");
+            }

@@ -1,0 +1,19 @@
+services:
+  pure-ftpd:
+    image: registry.$DOMAIN_NAME/pure-ftpd
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        OS_VERSION:
+    volumes:
+      - './data:/home/ftp'
+      - etc:/etc/pure-ftpd
+    # ports:
+    #   - '20:20'
+    #   - '21:21'
+    privileged: true
+    working_dir: /home/ftp/$USERNAME
+    network_mode: host
+volumes:
+  etc:

@@ -1,0 +1,10 @@
+services:
+  app:
+    image: registry.$DOMAIN_NAME/hostname-php
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PHP_IMAGE:
+    ports:
+      - 80:80

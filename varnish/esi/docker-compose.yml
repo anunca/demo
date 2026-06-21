@@ -1,0 +1,10 @@
+services:
+  app:
+    volumes:
+      - ./etc/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./src:/var/www/html/app:ro
+  varnish:
+    volumes:
+      - ./etc/default.vcl:/etc/varnish/default.vcl:ro
+    ports:
+      - 80:80

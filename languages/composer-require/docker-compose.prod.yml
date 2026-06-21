@@ -1,0 +1,9 @@
+services:
+  php:
+    build:
+      target: $ENV
+    image: $COMPOSER_REQUIRE_PHP_IMAGE:$ENV
+  nginx:
+    image: $COMPOSER_REQUIRE_NGINX_IMAGE:$ENV
+    build:
+      target: $ENV

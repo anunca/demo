@@ -1,0 +1,103 @@
+name: Upload
+
+on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: 'Select project'
+        required: true
+        default: library
+        type: choice
+        options:
+          - library
+env:
+  AWS_REGION: eu-west-3
+
+jobs:
+  validate-version:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - id: env
+        name: Set env
+        run: |
+          BUCKET_NAME=app-demo-release
+          echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_ENV
+          echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_OUTPUT
+
+      - id: valid
+        name: Validate version string
+        run: |
+          NEW_VERSION=new-version
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+    outputs:
+      BUCKET_NAME: ${{ steps.env.outputs.BUCKET_NAME }}
+      NEW_VERSION: ${{ steps.valid.outputs.NEW_VERSION }}
+
+  build-release:
+    needs: validate-version
+
+    runs-on: ubuntu-24.04
+
+    steps:    
+      - name: Set env from previous job
+        run: |
+          echo "NEW_VERSION=${{ needs.validate-version.outputs.NEW_VERSION }}" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PHP dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - id: composer-archive
+        name: Set env
+        run: |
+          RELEASE_PATH="$HOME/${{ inputs.project }}-release"
+          echo "RELEASE_PATH=$RELEASE_PATH" >> $GITHUB_ENV
+          echo "RELEASE_PATH=$RELEASE_PATH" >> $GITHUB_OUTPUT
+
+      - name: Composer create new release
+        run: composer archive --format tar.gz --file "${{ env.NEW_VERSION }}" --dir ${{ env.RELEASE_PATH }}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.project }}-release
+          path: ${{ env.RELEASE_PATH }}
+
+    outputs:
+      NEW_VERSION: ${{ needs.validate-version.outputs.NEW_VERSION }}
+      BUCKET_NAME: ${{ needs.validate-version.outputs.BUCKET_NAME }}
+      RELEASE_PATH: ${{ steps.composer-archive.outputs.RELEASE_PATH }}
+
+  s3-release:
+    needs: build-release
+
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Set env from previous job
+        run: |
+          echo "NEW_VERSION=${{ needs.build-release.outputs.NEW_VERSION }}" >> $GITHUB_ENV
+          echo "BUCKET_NAME=${{ needs.build-release.outputs.BUCKET_NAME }}" >> $GITHUB_ENV
+          echo "RELEASE_PATH=${{ needs.build-release.outputs.RELEASE_PATH }}" >> $GITHUB_ENV
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.project }}-release
+          path: ${{ env.RELEASE_PATH }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload release to S3
+        working-directory: ${{ env.RELEASE_PATH }}
+        run: aws s3 cp *.tar.gz "s3://${{ env.BUCKET_NAME }}/${{ env.NEW_VERSION }}/"

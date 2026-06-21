@@ -1,0 +1,11 @@
+services:
+  app:
+    image: registry.$DOMAIN_NAME/hostname-go
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        GO_VERSION:
+        ALPINE_VERSION:
+    ports:
+      - 80:80

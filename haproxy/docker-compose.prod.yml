@@ -1,0 +1,17 @@
+services:
+  haproxy:
+    image: demo/haproxy:prod
+    build:
+      target: prod
+  nginx1:
+    image: demo/haproxy-nginx:prod
+    build:
+      target: prod
+  nginx2:
+    image: demo/haproxy-nginx:prod
+    build:
+      target: prod
+  php:
+    image: demo/haproxy-php:prod
+    build:
+      target: prod

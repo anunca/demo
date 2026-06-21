@@ -1,0 +1,7 @@
+services:
+  app:
+    build:
+      target: dev
+    image: python-uvicorn-app:dev
+    volumes:
+      - ./src:/app

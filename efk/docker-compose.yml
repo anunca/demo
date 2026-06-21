@@ -1,0 +1,41 @@
+services:
+  app:
+    depends_on:
+      - filebeat
+      - elasticsearch
+      - kibana
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PHP_IMAGE:
+    image: registry.$DOMAIN_NAME/efk-app
+    volumes:
+      - ./etc/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./src:/var/www/html
+    ports:
+      - 80:80
+  filebeat:
+    image: $FILEBEAT_VERSION
+    user: root
+    # environment:
+    #   - strict.perms=false
+    volumes:
+      - ./etc/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+  elasticsearch:
+    image: $ES_VERSION
+    environment:
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "discovery.type=single-node"
+    ports:
+      - 9200:9200
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
+  kibana:
+    image: $KIBANA_VERSION
+    ports:
+      - 5601:5601
+volumes:
+  elasticsearch:

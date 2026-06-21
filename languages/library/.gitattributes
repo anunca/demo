@@ -1,0 +1,9 @@
+.* export-ignore
+*.md export-ignore
+doc* export-ignore
+composer.* export-ignore
+.env* export-ignore
+node_modules export-ignore
+package* export-ignore
+node_modules export-ignore
+release export-ignore

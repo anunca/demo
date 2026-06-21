@@ -1,0 +1,22 @@
+services:
+    centos-base:
+        image: registry.$DOMAIN_NAME/centos-base
+        build:
+            context: .
+            dockerfile: Dockerfile.centos.base
+            args:
+                CENTOS_VERSION:
+    centos:
+        depends_on:
+            - centos-base
+        image: registry.$DOMAIN_NAME/centos-snap
+        build:
+            context: .
+            dockerfile: Dockerfile.centos
+    fedora:
+        image: registry.$DOMAIN_NAME/fedora-snap
+        build:
+            context: .
+            dockerfile: Dockerfile.fedora
+            args:
+                FEDORA_VERSION:

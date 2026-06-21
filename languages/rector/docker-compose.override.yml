@@ -1,0 +1,11 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PHP_IMAGE:
+    volumes:
+      - ./etc/apache2/000-default.conf:/etc/apache2/sites-available/000-default.conf:ro
+    ports:
+      - 80:80

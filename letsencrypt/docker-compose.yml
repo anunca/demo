@@ -1,0 +1,31 @@
+services:
+    app:
+        depends_on:
+            - nginx
+        image: registry.$DOMAIN_NAME/letsencrypt
+        build:
+            context: .
+            args:
+                PHP_IMAGE:
+    nginx:
+        depends_on:
+            - certbot
+        image: ${NGINX_VERSION}
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - ./etc/nginx:/etc/nginx/conf.d
+            - certbot:/var/www/certbot
+            - letsencrypt:/etc/letsencrypt
+        command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    certbot:
+        image: ${CERTBOT_VERSION}
+        volumes:
+            - ./sh:/opt/certbot/sh
+            - certbot:/var/www/certbot
+            - letsencrypt:/etc/letsencrypt
+        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+volumes:
+    certbot:
+    letsencrypt:

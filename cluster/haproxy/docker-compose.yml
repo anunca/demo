@@ -1,0 +1,16 @@
+services:
+  haproxy:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: $DOCKERFILE
+      args:
+        HAPROXY_VERSION:
+    image: registry.$DOMAIN_NAME/haproxy
+    volumes:
+      - ./etc/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    ports:
+      - 80
+      # - 443:443
+    restart: unless-stopped

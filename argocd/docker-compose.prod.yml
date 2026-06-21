@@ -1,0 +1,5 @@
+services:
+  app:
+    image: register.app.internal/nginx-app:prod
+    build:
+      target: prod

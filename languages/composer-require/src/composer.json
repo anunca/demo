@@ -1,0 +1,11 @@
+{
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@github.com:anunca/hello.git"
+    }
+  ],
+  "require": {
+    "anunca/hello": "dev-main"
+  }
+}

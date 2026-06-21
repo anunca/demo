@@ -1,0 +1,7 @@
+services:
+  app:
+    ports:
+      - 80
+  varnish:
+    ports:
+      - 80

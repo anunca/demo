@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: FastAPI",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "fastapi",
+            "args": [
+                "dev",
+                "src/app/main.py",
+            ],
+        },
+        {
+            "name": "Python Debugger: FastAPI (Docker)",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5678,
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/src",
+                    "remoteRoot": "/app",
+                }
+            ],
+        }
+    ]
+}

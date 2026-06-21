@@ -1,0 +1,14 @@
+services:
+  vsftpd:
+    image: registry.$DOMAIN_NAME/vsftpd
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        OS_VERSION:
+    restart: always
+    volumes:
+      - ./data/vsftpd:/var/vsftpd
+    ports:
+      - '20-21:20-21'
+    tty: true

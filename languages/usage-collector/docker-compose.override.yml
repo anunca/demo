@@ -1,0 +1,21 @@
+services:
+  elasticsearch:
+    image: ${ELASTICSEARCH_IMAGE}
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: false
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+    ports:
+      - "127.0.0.1:9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+  app:
+    environment:
+      ELASTICSEARCH_HOST:
+      ELASTICSEARCH_PORT:
+    ports:
+      - "127.0.0.1:8000:8000"
+
+volumes:
+  elasticsearch_data:

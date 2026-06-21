@@ -1,0 +1,23 @@
+ARG OS_VERSION
+
+FROM $OS_VERSION
+
+RUN apk add --no-cache nfs-utils
+
+COPY etc/exports /etc/exports
+
+ARG NFS_DIRECTORY
+ARG NFS_HOST
+ARG NFS_OPTIONS
+
+RUN mkdir -p $NFS_DIRECTORY\
+  && chmod -R 777 /srv\
+  && echo "$NFS_DIRECTORY $NFS_HOST($NFS_OPTIONS)" >> /etc/exports
+
+COPY bin/nfsd.sh /bin/nfsd.sh
+
+RUN chmod +x /bin/nfsd.sh
+
+EXPOSE 2049
+
+CMD [ "/bin/nfsd.sh" ]

@@ -1,0 +1,21 @@
+FROM debian:buster-20191224-slim
+
+RUN apt update -qq\
+  && apt install -y curl gnupg gnupg2 gnupg1 nmap sudo\
+  && rm -rf /var/lib/apt/lists/*
+
+RUN curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall\
+    && chmod +x msfinstall\
+    && ./msfinstall\
+    && rm msfinstall
+
+RUN echo "root:root" | chpasswd
+
+RUN useradd -s /bin/bash -d /home/metasploit/ -m -G sudo metasploit\
+    && echo "metasploit:metasploit" | chpasswd
+
+USER metasploit
+
+WORKDIR /home/metasploit
+
+CMD [ "/bin/bash" ]
