@@ -1,5 +1,5 @@
 ARG COMPOSER_IMAGE=composer:2.9.7
-ARG PHP_IMAGE=php:8.3.13-fpm-alpine
+ARG PHP_IMAGE=php:8.3.31-fpm-alpine
 
 FROM $COMPOSER_IMAGE AS composer
 

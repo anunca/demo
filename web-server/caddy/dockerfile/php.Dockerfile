@@ -19,7 +19,7 @@ FROM base AS prod
 RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 
 #php-fpm conf
-COPY etc/php/php-fpm.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+COPY etc/php/php-fpm.conf $($PHP_INI_DIR}-fpm.d/zz-docker.conf
 
 #php opcache
 COPY <<EOF $PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini
