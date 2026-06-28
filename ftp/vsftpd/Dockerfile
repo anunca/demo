@@ -9,13 +9,15 @@ RUN echo 'root:root' | chpasswd\
   && mkdir /var/vsftpd\
   && chmod 777 /var/vsftpd
 
-RUN sed -i 's/#write_enable=YES/write_enable=YES/g' /etc/vsftpd/vsftpd.conf &&\
-  sed -i 's/anonymous_enable=YES/anonymous_enable=NO/g' /etc/vsftpd/vsftpd.conf &&\
-  sed -i 's/#local_umask=022/local_umask=022/g' /etc/vsftpd/vsftpd.conf &&\
-  sed -i 's/#ftpd_banner=Welcome to blah FTP service./ftpd_banner=Welcome/g' /etc/vsftpd/vsftpd.conf &&\
-  sed -i 's/#chroot_local_user=YES/chroot_local_user=NO/g' /etc/vsftpd/vsftpd.conf &&\
-  sed -i 's/#chroot_list_enable=YES/chroot_list_enable=YES/g' /etc/vsftpd/vsftpd.conf &&\
-  sed -i 's|#chroot_list_file=/etc/vsftpd/chroot_list|chroot_list_file=/etc/vsftpd/chroot_list|g' /etc/vsftpd/vsftpd.conf &&\
+RUN sed -i '\
+  s/#write_enable=YES/write_enable=YES/g;\
+  s/anonymous_enable=YES/anonymous_enable=NO/g;\
+  s/#local_umask=022/local_umask=022/g;\
+  s/#ftpd_banner=Welcome to blah FTP service./ftpd_banner=Welcome/g;\
+  s/#chroot_local_user=YES/chroot_local_user=NO/g;\
+  s/#chroot_list_enable=YES/chroot_list_enable=YES/g;\
+  s|#chroot_list_file=/etc/vsftpd/chroot_list|chroot_list_file=/etc/vsftpd/chroot_list|g;\
+  ' /etc/vsftpd/vsftpd.conf &&\
   sed -i 's/root//g' /etc/vsftpd/user_list &&\
   sed -i 's/root//g' /etc/vsftpd/ftpusers &&\
   echo 'root' >> /etc/vsftpd/chroot_list &&\
