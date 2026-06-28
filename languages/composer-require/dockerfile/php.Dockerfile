@@ -9,7 +9,7 @@ WORKDIR /usr/share/nginx/html
 
 FROM base AS base-builder
 
-#dev dependencies
+#Composer dependencies
 RUN apk add --no-cache unzip git
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
