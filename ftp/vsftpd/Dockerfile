@@ -1,4 +1,4 @@
-ARG OS_VERSION
+ARG OS_VERSION=centos:7.9.2009
 FROM $OS_VERSION
 
 RUN yum update -y\
