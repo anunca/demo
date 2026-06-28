@@ -7,7 +7,7 @@ RUN apt update -qq\
   && apt install -y libzip-dev\
   && rm -rf /var/lib/apt/lists/*
 
-#extensions
+#PHP extensions
 RUN docker-php-ext-install -j$(nproc) zip pdo_mysql\
   && docker-php-ext-enable opcache
  
