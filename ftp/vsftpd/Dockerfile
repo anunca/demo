@@ -16,8 +16,8 @@ RUN sed -i 's/#write_enable=YES/write_enable=YES/g' /etc/vsftpd/vsftpd.conf &&\
   sed -i 's/#chroot_local_user=YES/chroot_local_user=NO/g' /etc/vsftpd/vsftpd.conf &&\
   sed -i 's/#chroot_list_enable=YES/chroot_list_enable=YES/g' /etc/vsftpd/vsftpd.conf &&\
   sed -i 's|#chroot_list_file=/etc/vsftpd/chroot_list|chroot_list_file=/etc/vsftpd/chroot_list|g' /etc/vsftpd/vsftpd.conf &&\
-  sed -i 's|root||g' /etc/vsftpd/user_list &&\
-  sed -i 's|root||g' /etc/vsftpd/ftpusers &&\
+  sed -i 's/root//g' /etc/vsftpd/user_list &&\
+  sed -i 's/root//g' /etc/vsftpd/ftpusers &&\
   echo 'root' >> /etc/vsftpd/chroot_list &&\
   echo "background=NO" >> /etc/vsftpd/vsftpd.conf &&\
   echo "allow_writeable_chroot=YES" >> /etc/vsftpd/vsftpd.conf &&\
