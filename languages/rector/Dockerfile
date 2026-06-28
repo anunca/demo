@@ -25,7 +25,13 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # RUN composer install
 
-RUN cp $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
+RUN cp $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini\
+&& sed -i '\
+s/;opcache.enable=.*/opcache.enable=1/;\
+s/;opcache.enable_cli=.*/opcache.enable_cli=1/;\
+s|;date.timezone =.*|date.timezone = Europe/Paris|;\
+s/memory_limit =.*/memory_limit = 128M/;\
+' $PHP_INI_DIR/php.ini
 
 FROM base AS prod
 
