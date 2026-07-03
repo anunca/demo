@@ -7,7 +7,7 @@ services:
       dockerfile: $DOCKERFILE
       args:
         HAPROXY_VERSION:
-    image: registry.$DOMAIN_NAME/haproxy
+    image: $IMAGE
     volumes:
       - ./etc/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     ports:

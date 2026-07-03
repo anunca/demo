@@ -2,7 +2,7 @@ services:
     app:
         depends_on:
             - nginx
-        image: registry.$DOMAIN_NAME/letsencrypt
+        image: $IMAGE
         build:
             context: .
             args:

@@ -1,6 +1,6 @@
 services:
   nfs:
-    image: registry.$DOMAIN_NAME/nfs
+    image: $IMAGE
     build:
       context: .
       dockerfile: $DOCKERFILE

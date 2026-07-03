@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: registry.$DOMAIN_NAME/metasploit
+    image: $IMAGE
     tty: true
   db:
     image: postgres:12.6-alpine

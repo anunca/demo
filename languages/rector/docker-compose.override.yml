@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
       args:
         PHP_IMAGE:
+    image: $IMAGE
     volumes:
       - ./etc/apache2/000-default.conf:/etc/apache2/sites-available/000-default.conf:ro
     ports:

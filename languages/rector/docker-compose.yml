@@ -1,6 +1,5 @@
 services:
   app:
-    image: rector
     build:
       target: dev
     volumes:

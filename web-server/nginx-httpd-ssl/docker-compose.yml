@@ -20,7 +20,7 @@ services:
     volumes:
       - ./src:/var/www/html
   proxy:
-    image: registry.$DOMAIN_NAME/ssl
+    image: $IMAGE
     build:
       context: .
       args:

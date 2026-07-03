@@ -2,4 +2,3 @@ services:
   app:
     build:
       target: prod
-    image: python-uvicorn-app:prod

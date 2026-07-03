@@ -11,7 +11,6 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
-    image: ${APP_IMAGE}:prod
     build:
       args:
         PYTHON_IMAGE:

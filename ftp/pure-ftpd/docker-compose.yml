@@ -1,6 +1,6 @@
 services:
   pure-ftpd:
-    image: registry.$DOMAIN_NAME/pure-ftpd
+    image: $IMAGE
     build:
       context: .
       dockerfile: Dockerfile

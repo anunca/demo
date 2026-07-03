@@ -9,7 +9,7 @@ services:
       dockerfile: Dockerfile
       args:
         PHP_IMAGE:
-    image: registry.$DOMAIN_NAME/efk-app
+    image: $IMAGE
     volumes:
       - ./etc/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
       - ./src:/var/www/html

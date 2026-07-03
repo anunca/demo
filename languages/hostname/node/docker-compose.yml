@@ -1,6 +1,6 @@
 services:
   app:
-    image: registry.$DOMAIN_NAME/hostname-node
+    image: $IMAGE
     build:
       context: .
       dockerfile: Dockerfile

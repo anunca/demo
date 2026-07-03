@@ -1,7 +1,6 @@
 services:
 
   app:
-    image: ${APP_IMAGE}:dev
     build:
       args:
         PYTHON_IMAGE:

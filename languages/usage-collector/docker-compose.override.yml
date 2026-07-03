@@ -11,6 +11,7 @@ services:
       - elasticsearch_data:/usr/share/elasticsearch/data
 
   app:
+    image: $IMAGE
     environment:
       ELASTICSEARCH_HOST:
       ELASTICSEARCH_PORT:

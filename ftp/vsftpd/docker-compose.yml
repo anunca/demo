@@ -1,6 +1,6 @@
 services:
   vsftpd:
-    image: registry.$DOMAIN_NAME/vsftpd
+    image: $IMAGE
     build:
       context: .
       dockerfile: Dockerfile

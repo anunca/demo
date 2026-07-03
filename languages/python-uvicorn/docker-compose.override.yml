@@ -5,6 +5,7 @@ services:
       context: .
       args:
         PYTHON_IMAGE:
+    image: $IMAGE
     ports:
       - "8000:8000"
   nginx:

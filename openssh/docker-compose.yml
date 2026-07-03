@@ -1,6 +1,6 @@
 services:
   openssh:
-    image: registry.$DOMAIN_NAME/openssh
+    image: $IMAGE
     build:
       context: .
       dockerfile: Dockerfile
