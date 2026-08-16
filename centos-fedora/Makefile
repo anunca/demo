@@ -60,8 +60,8 @@ sh.node1: ## Exec shell node1
 
 ##@ Multipass
 multipass.install: ## Install
-	$(dc) exec master1 bash -c "yum install -y make; snap install multipass --classic --beta"
-	$(dc) exec node1 bash -c "dnf install -y make; snap install multipass --classic --beta"
+	$(dc) exec master1 bash -c "yum install -y make; snap install multipass"
+	$(dc) exec node1 bash -c "dnf install -y make; snap install multipass"
 
 multipass.launch: ## Launch
 	$(dc) exec master1 bash -c "make launch.master"
