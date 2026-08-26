@@ -1,4 +1,4 @@
-# FastAPI elasticsearch
+# FastAPI Elasticsearch
 ## overview
 - [doc](#doc)
 - [install](#install)
