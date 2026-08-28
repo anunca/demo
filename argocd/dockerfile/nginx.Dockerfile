@@ -1,5 +1,4 @@
-ARG NGINX_VERSION=1.30.0
-ARG NGINX_IMAGE=nginx:${NGINX_VERSION}-alpine
+ARG NGINX_IMAGE=nginx:1.31.4-alpine
 
 FROM $NGINX_IMAGE AS dev
 COPY src/index-dev.html /usr/share/nginx/html/index.html

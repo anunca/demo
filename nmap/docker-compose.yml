@@ -5,4 +5,4 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        ALPINE_VERSION:
+        ALPINE_IMAGE:

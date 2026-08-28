@@ -1,4 +1,5 @@
-ARG PYTHON_IMAGE=python:3.14.4-alpine
+ARG PYTHON_IMAGE=python:3.14.7-alpine
+
 FROM $PYTHON_IMAGE AS builder
 
 WORKDIR /app
