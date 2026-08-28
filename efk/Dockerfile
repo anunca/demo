@@ -8,7 +8,6 @@ RUN apt update -qq\
   && rm -rf /var/lib/apt/lists/*
 
 #PHP extensions
-RUN docker-php-ext-install -j$(nproc) zip pdo_mysql\
-  && docker-php-ext-enable opcache
+RUN docker-php-ext-install -j$(nproc) zip pdo_mysql
  
 WORKDIR /var/www/html

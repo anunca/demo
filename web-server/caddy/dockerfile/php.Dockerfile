@@ -2,10 +2,6 @@ ARG PHP_IMAGE=php:8.5.9-fpm-alpine
 
 FROM $PHP_IMAGE AS base
 
-#php extensions
-RUN docker-php-ext-install -j$(nproc)\
-  opcache
-
 WORKDIR /srv
 
 FROM base AS dev

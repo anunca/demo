@@ -1,4 +1,4 @@
-ARG OS_VERSION
+ARG OS_VERSION=ubuntu:20.04
 FROM $OS_VERSION
 
 RUN apt update -qq\
