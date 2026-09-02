@@ -1,4 +1,4 @@
-ARG PHP_IMAGE=php:8.5.9-apache
+ARG PHP_IMAGE=php:8.5.10-apache
 
 FROM $PHP_IMAGE AS base
  
