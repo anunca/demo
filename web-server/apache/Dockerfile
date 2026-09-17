@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 ARG HTTPD_MOD_PHP=php:8.3.30-apache
 
 FROM $HTTPD_MOD_PHP AS base
