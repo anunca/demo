@@ -8,10 +8,8 @@ ENV ?= dev
 TAG ?= ${ENV}
 DOCKER_SHELL ?= sh
 
-dc_files = docker-compose.yml
-dc = docker compose $(foreach f,$(dc_files),-f $(f))
+dc = docker compose -f docker-compose.yml
 
-export ENV
 export APP_DOMAIN_NAME
 
 SUBJECT="/C=FR/ST=Ile-de-France/L=Paris/O=MyCompany/OU=MyOrganizationUnit/CN=${APP_DOMAIN_NAME}"

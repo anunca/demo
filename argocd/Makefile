@@ -18,7 +18,6 @@ endif
 
 dc = docker compose $(foreach f,$(dc_files),-f $(f))
 
-export ENV
 export GITHUB_TOKEN
 
 help h: ## Show help

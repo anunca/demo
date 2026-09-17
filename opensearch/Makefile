@@ -8,10 +8,8 @@ ENV ?= dev
 TAG ?= ${ENV}
 DOCKER_SHELL ?= sh
 
-dc_files = docker-compose.yml
-dc = docker compose $(foreach f,$(dc_files),-f $(f))
+dc = docker compose -f docker-compose.yml
 
-export ENV
 export OPENSEARCH_INITIAL_ADMIN_PASSWORD
 
 help h: ## Show help

@@ -8,11 +8,7 @@ ENV ?= dev
 TAG ?= ${ENV}
 DOCKER_SHELL ?= sh
 
-dc_files = docker-compose.yml
-dc = docker compose $(foreach f,$(dc_files),-f $(f))
-
-export ENV
-export TAG
+dc = docker compose -f docker-compose.yml
 
 help h: ## Show help
 	@awk 'BEGIN {FS = ":.*##"} \

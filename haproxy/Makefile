@@ -20,9 +20,6 @@ endif
 
 dc = docker compose $(foreach f,$(dc_files),-f $(f))
 
-export ENV
-export TAG
-
 help h: ## Show help
 	@awk 'BEGIN {FS = ":.*##"} \
 	/^[a-zA-Z0-9_. -]+:.*##/ { \
