@@ -9,14 +9,14 @@ on:
 jobs:
   version-create-release:
     if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.title, 'Version bump to')
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     permissions:
       contents: write
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Get current version from composer.json
       run: |

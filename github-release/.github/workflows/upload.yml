@@ -15,7 +15,7 @@ env:
 
 jobs:
   validate-version:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - id: env
@@ -39,7 +39,7 @@ jobs:
   build-release:
     needs: validate-version
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:    
       - name: Set env from previous job
@@ -47,7 +47,7 @@ jobs:
           echo "NEW_VERSION=${{ needs.validate-version.outputs.NEW_VERSION }}" >> $GITHUB_ENV
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install PHP dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction
@@ -63,7 +63,7 @@ jobs:
         run: composer archive --format tar.gz --file "${{ env.NEW_VERSION }}" --dir ${{ env.RELEASE_PATH }}
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ inputs.project }}-release
           path: ${{ env.RELEASE_PATH }}
@@ -76,7 +76,7 @@ jobs:
   s3-release:
     needs: build-release
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - name: Set env from previous job
@@ -86,7 +86,7 @@ jobs:
           echo "RELEASE_PATH=${{ needs.build-release.outputs.RELEASE_PATH }}" >> $GITHUB_ENV
 
       - name: Download Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ${{ inputs.project }}-release
           path: ${{ env.RELEASE_PATH }}

@@ -20,7 +20,7 @@ env:
 
 jobs:
   validate-version:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - id: validate-version
@@ -63,7 +63,7 @@ jobs:
   build-release:
     needs: validate-version
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     permissions:
       contents: write
@@ -77,7 +77,7 @@ jobs:
           echo "RELEASE_PATH=$RELEASE_PATH" >> $GITHUB_ENV
 
       - name: Checkout ${{ inputs.project }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 1
           repository: ${{ github.repository_owner }}/${{ inputs.project }}
@@ -93,9 +93,10 @@ jobs:
         run: node -v
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: '22'
+          node-version: "24"
+          cache: npm
 
       - name: Verify Node.js version
         run: node -v
@@ -180,7 +181,7 @@ jobs:
         run: composer archive --format tar.gz --file ${{ env.NEW_VERSION }} --dir ${{ env.RELEASE_PATH }}
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: "${{ inputs.project }}-release"
           path: ${{ env.RELEASE_PATH }}
@@ -193,7 +194,7 @@ jobs:
   s3-release:
     needs: build-release
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - name: Set env
@@ -204,7 +205,7 @@ jobs:
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
       - name: Download Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: "${{ inputs.project }}-release"
 
