@@ -7,7 +7,6 @@
     - [Pure-FTPd](./ftp/pure-ftpd/README.md)
     - [Vsftpd](./ftp/vsftpd/README.md)
 - [Python Uvicorn](./python-uvicorn/README.md)
-- [Rector](./rector/README.md)
 - [FastAPI Elasticsearch](./fastapi-elasticsearch/README.md)
 - web server
     - [Apache](./web-server/apache/README.md)
