@@ -1,4 +1,4 @@
-# map
+# Nmap
 - [doc](#doc)
 - [install](#install)
 - [notes](#notes)
