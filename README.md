@@ -26,8 +26,7 @@ Hands-on infrastructure and application examples covering containers, networking
 | [Python Uvicorn](./python-uvicorn/README.md) | Run and benchmark a Python application with Uvicorn |
 | [Rust](./rust/README.md) | Build, run, and debug a Rust project |
 | [Traefik](./traefik/README.md) | Route HTTPS traffic through Traefik with local certificates |
-| [Varnish ESI](./varnish/esi/README.md) | Compose cached page fragments with Edge Side Includes |
-| [Varnish](./varnish/README.md) | Explore HTTP caching with Varnish |
+| [Varnish ESI](./varnish/README.md) | Compose cached page fragments with Edge Side Includes |
 | [Apache](./web-server/apache/README.md) | Build and run a containerized Apache web server |
 | [Caddy](./web-server/caddy/README.md) | Run Caddy with optional Route 53 DNS integration |
 | [nginx and Apache SSL](./web-server/nginx-httpd-ssl/README.md) | Terminate TLS with nginx in front of Apache |
