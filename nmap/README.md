@@ -1,5 +1,4 @@
-# AWS AMI
-## overview
+# map
 - [doc](#doc)
 - [install](#install)
 - [notes](#notes)
@@ -9,6 +8,3 @@
 make help
 ```
 ## notes
-```sh
-make scan IP=8.8.8.8
-```
