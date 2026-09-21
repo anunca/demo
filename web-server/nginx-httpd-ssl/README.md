@@ -1,4 +1,4 @@
-# Nginx Apache SSL
+# nginx and Apache SSL
 ## overview
 - [doc](#doc)
 - [install](#install)
