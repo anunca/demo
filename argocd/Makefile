@@ -1,8 +1,8 @@
 .PHONY: help
 .DEFAULT_GOAL := help
 
-include .env
--include .env.local
+-include .env
+include .env.local
 
 ENV ?= dev
 TAG ?= ${ENV}
