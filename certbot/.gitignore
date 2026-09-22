@@ -1,3 +1,5 @@
-.env.local
+.env*
+!.env.local
+
 etc/letsencrypt
 var/log/letsencrypt
