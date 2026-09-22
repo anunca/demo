@@ -8,7 +8,7 @@ ENV ?= dev
 TAG ?= ${ENV}
 DOCKER_SHELL ?= sh
 
-dc = docker compose -f docker-compose.yml
+dc = docker compose -f compose.$(ENV).yml
 
 export APP_DOMAIN_NAME
 

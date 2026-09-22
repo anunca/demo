@@ -8,7 +8,7 @@ ENV ?= dev
 TAG ?= ${ENV}
 DOCKER_SHELL ?= sh
 
-dc = docker compose -f docker-compose.yml
+dc = docker compose -f compose.$(ENV).yml
 
 help h: ## Show help
 	@awk 'BEGIN {FS = ":.*##"} \

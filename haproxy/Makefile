@@ -10,15 +10,7 @@ DOCKER_SHELL ?= sh
 APP_DOMAIN_NAME=appdemo.name
 SUBJECT="/C=FR/ST=Ile-de-France/L=Paris/O=MyCompany/OU=MyOrganizationUnit/CN=${APP_DOMAIN_NAME}"
 
-dc_files = docker-compose.override.yml
-
-ifeq ($(ENV),prod)
-	dc_files += docker-compose.prod.yml
-else
-	dc_files += docker-compose.yml
-endif
-
-dc = docker compose $(foreach f,$(dc_files),-f $(f))
+dc = docker compose -f compose.yml -f compose.$(ENV).yml
 
 help h: ## Show help
 	@awk 'BEGIN {FS = ":.*##"} \
