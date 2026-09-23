@@ -11,7 +11,7 @@ SUBJECT="/C=FR/ST=Ile-de-France/L=Paris/O=MyCompany/OU=MyOrganizationUnit/CN=${A
 
 dc = docker compose -f compose.$(ENV).yml
 
-export APP_DOMAIN_NAME
+export NGINX_IMAGE APP_DOMAIN_NAME
 
 help h: ## Show help
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_. -]+:.*##/ {split($$1,a," "); printf "%-20s %s\n",a[1],$$2}' $(MAKEFILE_LIST)
