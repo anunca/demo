@@ -4,8 +4,6 @@
 include .env.local
 -include .env
 
-export
-
 ENV ?= dev
 TAG ?= ${ENV}
 DOCKER_SHELL ?= sh

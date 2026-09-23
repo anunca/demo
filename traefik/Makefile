@@ -7,6 +7,7 @@ include .env.local
 ENV ?= dev
 TAG ?= ${ENV}
 DOCKER_SHELL ?= sh
+
 dc = docker compose -f compose.$(ENV).yml
 
 export TRAEFIK_IMAGE APACHE_IMAGE NGINX_IMAGE DOMAIN_NAME
