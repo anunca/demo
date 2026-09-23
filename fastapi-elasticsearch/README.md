@@ -9,6 +9,17 @@ A small FastAPI service backed by Elasticsearch, with separate development and p
 
 Local settings belong in `.env.local`. Keep credentials out of Git.
 
+## Documentation
+
+- Build and run the local environment:
+  - [Docker](doc/docker.md)
+  - [Linux](doc/linux.md)
+- Python: <https://docs.python.org/3/>
+- FastAPI: <https://fastapi.tiangolo.com/tutorial/first-steps/>
+- Pydantic: <https://docs.pydantic.dev/latest/>
+- Python debugging in VS Code: <https://code.visualstudio.com/docs/python/debugging>
+- Elasticsearch search documentation: <https://www.elastic.co/docs/solutions/search>
+
 ## Development
 
 Inspect the effective configuration first:
