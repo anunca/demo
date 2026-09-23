@@ -24,5 +24,5 @@ logs l: ## Follow logs
 	$(dc) logs -f
 ps: ## List services
 	$(dc) ps
-clean: ## Remove this lab's containers, networks, and volumes
-	$(dc) down --volumes --remove-orphans
+clean: ## Remove containers and volumes
+	$(dc) down -t0--volumes --remove-orphans

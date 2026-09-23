@@ -45,5 +45,5 @@ logs l: ## Follow logs
 ps: ## List containers
 	$(dc) ps -a
 
-clean.all ca: stop ## Cleanup all docker
-	docker system prune -fa && docker volume prune -fa
+clean: ## Remove containers and volumes
+	$(dc) down -t0 --volumes --remove-orphans

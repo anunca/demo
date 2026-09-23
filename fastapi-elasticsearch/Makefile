@@ -26,7 +26,7 @@ build b: ## Build application image
 	$(dc) build
 
 start s: ## Start services
-	$(dc) up -d --build
+	$(dc) up -d
 
 stop st: ## Stop services
 	$(dc) down -t0
@@ -45,8 +45,8 @@ logs l: ## Follow logs
 ps: ## List services
 	$(dc) ps
 
-clean: ## Remove this lab's containers, networks, and volumes
-	$(dc) down --volumes --remove-orphans
+clean: ## Remove containers and volumes
+	$(dc) down -t0 --volumes --remove-orphans
 
 test: ## Run tests in the app container
 	$(dc) exec -T app pytest -q test/

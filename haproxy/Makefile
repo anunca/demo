@@ -47,8 +47,8 @@ logs l: ## Follow logs
 ps: ## List containers
 	$(dc) ps
 
-clean.all ca: stop ## Cleanup all docker
-	docker system prune -fa && docker volume prune -fa
+clean: ## Remove containers and volumes
+	$(dc) down -t0 --volumes --remove-orphans
 
 ssc.create: ssc.delete ## Self signed certificate create
 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj "${SUBJECT}" -keyout etc/nginx/certs/${APP_DOMAIN_NAME}.key -out etc/nginx/certs/${APP_DOMAIN_NAME}.crt\
