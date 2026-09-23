@@ -13,12 +13,7 @@ SUBJECT="/C=FR/ST=Ile-de-France/L=Paris/O=MyCompany/OU=MyOrganizationUnit/CN=${A
 dc = docker compose -f compose.yml -f compose.$(ENV).yml
 
 help h: ## Show help
-	@awk 'BEGIN {FS = ":.*##"} \
-	/^[a-zA-Z0-9_. -]+:.*##/ { \
-		split($$1,a," "); \
-		printf "%-20s %s\n", a[1], $$2 \
-	} \
-	/^##@/ {printf "\n%s\n", substr($$0,5)}' $(MAKEFILE_LIST)
+@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_. -]+:.*##/ {split($$1,a," "); printf "%-20s %s\n",a[1],$$2}' $(MAKEFILE_LIST)
 
 ##@ Docker
 config c: ## Show config

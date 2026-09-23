@@ -10,7 +10,7 @@ dc = docker compose -f compose.$(ENV).yml
 export OPENSEARCH_INITIAL_ADMIN_PASSWORD
 
 help h: ## Show help
-	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_. -]+:.*##/ {split($$1,a," "); printf "%-20s %s\n",a[1],$$2}' $(MAKEFILE_LIST)
+@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_. -]+:.*##/ {split($$1,a," "); printf "%-20s %s\n",a[1],$$2}' $(MAKEFILE_LIST)
 
 config c: ## Validate and show Compose config
 	$(dc) config

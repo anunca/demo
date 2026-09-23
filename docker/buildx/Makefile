@@ -16,12 +16,7 @@ dbb = docker buildx bake $(foreach f,$(dc_files),-f $(f))
 export GITHUB_TOKEN
 
 help h: ## Show help
-	@awk 'BEGIN {FS = ":.*##"} \
-	/^[a-zA-Z0-9_. -]+:.*##/ { \
-		split($$1,a," "); \
-		printf "%-20s %s\n", a[1], $$2 \
-	} \
-	/^##@/ {printf "\n%s\n", substr($$0,5)}' $(MAKEFILE_LIST)
+@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_. -]+:.*##/ {split($$1,a," "); printf "%-20s %s\n",a[1],$$2}' $(MAKEFILE_LIST)
 
 ##@ Docker
 config c: ## Show config
