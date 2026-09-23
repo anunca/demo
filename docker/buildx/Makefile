@@ -4,6 +4,8 @@
 include .env.local
 -include .env
 
+export
+
 ENV ?= dev
 TAG ?= ${ENV}
 DOCKER_SHELL ?= sh
@@ -12,8 +14,6 @@ dc_files = compose.yml compose.$(ENV).yml
 
 dc = docker compose $(foreach f,$(dc_files),-f $(f))
 dbb = docker buildx bake $(foreach f,$(dc_files),-f $(f))
-
-export GITHUB_TOKEN
 
 help h: ## Show help
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_. -]+:.*##/ {split($$1,a," "); printf "%-20s %s\n",a[1],$$2}' $(MAKEFILE_LIST)

@@ -1,8 +1,10 @@
 .PHONY: help
 .DEFAULT_GOAL := help
 
--include .env
 include .env.local
+-include .env
+
+export
 
 ENV ?= dev
 TAG ?= ${ENV}
@@ -10,8 +12,6 @@ DOCKER_SHELL ?= sh
 SUBJECT="/C=FR/ST=Ile-de-France/L=Paris/O=MyCompany/OU=MyOrganizationUnit/CN=${APP_DOMAIN_NAME}"
 
 dc = docker compose -f compose.$(ENV).yml
-
-export NGINX_IMAGE APP_DOMAIN_NAME
 
 help h: ## Show help
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_. -]+:.*##/ {split($$1,a," "); printf "%-20s %s\n",a[1],$$2}' $(MAKEFILE_LIST)

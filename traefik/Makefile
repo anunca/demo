@@ -4,13 +4,13 @@
 include .env.local
 -include .env
 
+export
+
 ENV ?= dev
 TAG ?= ${ENV}
 DOCKER_SHELL ?= sh
 
 dc = docker compose -f compose.$(ENV).yml
-
-export TRAEFIK_IMAGE APACHE_IMAGE NGINX_IMAGE DOMAIN_NAME
 
 help h: ## Show help
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_. -]+:.*##/ {split($$1,a," "); printf "%-20s %s\n",a[1],$$2}' $(MAKEFILE_LIST)
