@@ -26,16 +26,7 @@ jobs:
             dir="$(dirname "$file")"
             name="$(basename "$file")"
             (
-              cd "$dir"
-              if [[ -f .env.local ]]; then
-                set -a
-                source .env.local
-                if [[ -f .env ]]; then
-                  source .env
-                fi
-                set +a
-              fi
-              docker compose -f "$name" config --quiet
+              make -C $dir config --quiet
             )
             echo "::endgroup::"
-          done < <(find . -type f \( -name 'compose.yml' -o -name 'compose.yaml' \) -print | sort)
+          done < <(find . -type f -name 'compose.yml' -print | sort)
