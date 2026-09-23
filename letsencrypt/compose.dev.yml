@@ -10,7 +10,7 @@ services:
     nginx:
         depends_on:
             - certbot
-        image: ${NGINX_VERSION}
+        image: ${NGINX_IMAGE}
         ports:
             - 80:80
             - 443:443
@@ -20,7 +20,7 @@ services:
             - letsencrypt:/etc/letsencrypt
         command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     certbot:
-        image: ${CERTBOT_VERSION}
+        image: ${CERTBOT_IMAGE}
         volumes:
             - ./sh:/opt/certbot/sh
             - certbot:/var/www/certbot
