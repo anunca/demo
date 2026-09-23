@@ -10,9 +10,9 @@ permissions:
 
 jobs:
   repository:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Check whitespace
         run: git diff --check
@@ -27,6 +27,14 @@ jobs:
             name="$(basename "$file")"
             (
               cd "$dir"
+              if [[ -f .env.local ]]; then
+                set -a
+                source .env.local
+                if [[ -f .env ]]; then
+                  source .env
+                fi
+                set +a
+              fi
               docker compose -f "$name" config --quiet
             )
             echo "::endgroup::"
