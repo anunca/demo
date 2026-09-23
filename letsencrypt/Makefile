@@ -10,7 +10,7 @@ DOCKER_SHELL ?= sh
 
 dc = docker compose -f compose.$(ENV).yml
 
-export IMAGE NGINX_VERSION CERTBOT_IMAGE
+export IMAGE NGINX_IMAGE CERTBOT_IMAGE
 
 help h: ## Show help
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_. -]+:.*##/ {split($$1,a," "); printf "%-20s %s\n",a[1],$$2}' $(MAKEFILE_LIST)
