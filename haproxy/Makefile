@@ -2,7 +2,7 @@
 .DEFAULT_GOAL := help
 
 -include .env
-include .env.local
+-include .env.local
 
 ENV ?= dev
 TAG ?= ${ENV}
@@ -31,7 +31,7 @@ start s: ## Start containers
 	$(dc) up -d
 
 stop st: ## Stop containers
-	$(dc) down -t0
+	$(dc) down
 
 restart r: stop start ## Restart
 
@@ -45,7 +45,7 @@ logs l: ## Follow logs
 	$(dc) logs -f
 
 ps: ## List containers
-	$(dc) ps -a
+	$(dc) ps
 
 clean.all ca: stop ## Cleanup all docker
 	docker system prune -fa && docker volume prune -fa
