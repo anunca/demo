@@ -26,7 +26,7 @@ start s: ## Start containers
 	$(dc) up -d
 
 stop st: ## Stop containers
-	$(dc) down
+	$(dc) down -t0
 
 restart r: stop start ## Restart
 

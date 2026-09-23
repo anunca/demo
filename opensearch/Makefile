@@ -18,7 +18,7 @@ start s: ## Start OpenSearch stack
 	@test -n "$(OPENSEARCH_INITIAL_ADMIN_PASSWORD)" || (echo "OPENSEARCH_INITIAL_ADMIN_PASSWORD is required" >&2; exit 1)
 	$(dc) up -d
 stop st: ## Stop services
-	$(dc) down
+	$(dc) down -t0
 restart r: stop start ## Restart services
 logs l: ## Follow logs
 	$(dc) logs -f
