@@ -1,8 +1,8 @@
 .PHONY: help config build start stop restart run shell logs ps clean test
 .DEFAULT_GOAL := help
 
+include .env.local
 -include .env
--include .env.local
 
 ENV ?= dev
 DOCKER_SHELL ?= sh
