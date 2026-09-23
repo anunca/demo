@@ -1,7 +1,5 @@
-# Local environment files
+# Local environment overrides
 .env
-.env.*
-!.env.example
 
 # macOS / editors
 .DS_Store
