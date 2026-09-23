@@ -25,7 +25,7 @@ jobs:
             echo "::group::$file"
             dir="$(dirname "$file")"
             (
-              make -C $dir config --quiet
+              make -C $dir config
             )
             echo "::endgroup::"
-          done < <(find . -type f \( -name 'compose.yml' -o -name 'compose.dev.yaml' \) -print | sort)
+          done < <(find . -type f -name 'compose.dev.yml' -print | sort)
