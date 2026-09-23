@@ -5,6 +5,7 @@ include .env.local
 -include .env
 
 ENV ?= dev
+TAG ?= ${ENV}
 DOCKER_SHELL ?= sh
 
 dc = docker compose -f compose.$(ENV).yml
@@ -19,7 +20,7 @@ build b: ## Build images
 start s: ## Start services
 	$(dc) up -d --build
 stop st: ## Stop services
-	$(dc) down
+	$(dc) down -t0
 restart r: stop start ## Restart services
 run: ## Run one-off app shell
 	$(dc) run --rm --entrypoint $(DOCKER_SHELL) app
