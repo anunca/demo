@@ -1,8 +1,8 @@
 .PHONY: help config start stop restart logs ps clean
 .DEFAULT_GOAL := help
 
+include .env.local
 -include .env
--include .env.local
 
 ENV ?= dev
 dc = docker compose -f compose.$(ENV).yml
