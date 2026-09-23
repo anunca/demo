@@ -24,9 +24,8 @@ jobs:
           while IFS= read -r file; do
             echo "::group::$file"
             dir="$(dirname "$file")"
-            name="$(basename "$file")"
             (
               make -C $dir config --quiet
             )
             echo "::endgroup::"
-          done < <(find . -type f -name 'compose.yml' -print | sort)
+          done < <(find . -type f \( -name 'compose.yml' -o -name 'compose.dev.yaml' \) -print | sort)
