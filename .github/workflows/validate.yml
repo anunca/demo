@@ -1,0 +1,34 @@
+name: Validate labs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  repository:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Validate Docker Compose files
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r file; do
+            echo "::group::$file"
+            dir="$(dirname "$file")"
+            name="$(basename "$file")"
+            (
+              cd "$dir"
+              touch .env.local
+              docker compose -f "$name" config --quiet
+            )
+            echo "::endgroup::"
+          done < <(find . -type f \( -name 'compose.yml' -o -name 'compose.yaml' \) -print | sort)
