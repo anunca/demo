@@ -38,7 +38,7 @@ logs l: ## Follow logs
 	$(dc) logs -f
 
 ps: ## List services
-	$(dc) ps
+	$(dc) ps -a
 
 clean: ## Remove containers and volumes
 	$(dc) down -t0 --volumes --remove-orphans

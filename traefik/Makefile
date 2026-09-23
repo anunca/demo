@@ -24,6 +24,6 @@ shell sh: ## Open Traefik shell
 logs l: ## Follow logs
 	$(dc) logs -f
 ps: ## List services
-	$(dc) ps
+	$(dc) ps -a
 clean: ## Remove this lab's containers and networks
 	$(dc) down --remove-orphans
