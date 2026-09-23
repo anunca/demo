@@ -27,11 +27,6 @@ jobs:
             name="$(basename "$file")"
             (
               cd "$dir"
-              if [[ -f .env.example ]]; then
-                cp .env.example .env.local
-              else
-                touch .env.local
-              fi
               docker compose -f "$name" config --quiet
             )
             echo "::endgroup::"
