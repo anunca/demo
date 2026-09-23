@@ -17,15 +17,13 @@ jobs:
       - name: Check whitespace
         run: git diff --check
 
-      - name: Validate Docker Compose files
+      - name: Validate Docker Compose projects
         shell: bash
         run: |
           set -euo pipefail
           while IFS= read -r file; do
             echo "::group::$file"
             dir="$(dirname "$file")"
-            (
-              make -C $dir config
-            )
+            make -C "$dir" config
             echo "::endgroup::"
           done < <(find . -type f -name 'compose.dev.yml' -print | sort)
