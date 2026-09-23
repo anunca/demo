@@ -12,7 +12,7 @@ jobs:
   repository:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Check whitespace
         run: git diff --check
@@ -27,7 +27,11 @@ jobs:
             name="$(basename "$file")"
             (
               cd "$dir"
-              touch .env.local
+              if [[ -f .env.example ]]; then
+                cp .env.example .env.local
+              else
+                touch .env.local
+              fi
               docker compose -f "$name" config --quiet
             )
             echo "::endgroup::"
