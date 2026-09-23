@@ -10,7 +10,7 @@ ENV ?= dev
 TAG ?= ${ENV}
 DOCKER_SHELL ?= sh
 
-dc_files = compose.yml -f compose.$(ENV).yml
+dc_files = compose.yml compose.$(ENV).yml
 
 dc = docker compose $(foreach f,$(dc_files),-f $(f))
 dbb = docker buildx bake $(foreach f,$(dc_files),-f $(f))
