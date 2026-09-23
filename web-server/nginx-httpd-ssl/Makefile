@@ -10,13 +10,10 @@ DOCKER_SHELL ?= sh
 
 dc = docker compose -f compose.$(ENV).yml
 
+export NGINX_IMAGE APACHE_IMAGE PHP_IMAGE IMAGE DOMAIN_NAME_SSL
+
 help h: ## Show help
-	@awk 'BEGIN {FS = ":.*##"} \
-	/^[a-zA-Z0-9_. -]+:.*##/ { \
-		split($$1,a," "); \
-		printf "%-20s %s\n", a[1], $$2 \
-	} \
-	/^##@/ {printf "\n%s\n", substr($$0,5)}' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_. -]+:.*##/ {split($$1,a," "); printf "%-20s %s\n",a[1],$$2}' $(MAKEFILE_LIST)
 
 ##@ Docker
 config c: ## Show config
@@ -45,8 +42,8 @@ logs l: ## Follow logs
 ps: ## List containers
 	$(dc) ps -a
 
-clean.all ca: stop ## Cleanup all docker
-	docker system prune -fa && docker volume prune -fa
+clean: ## Remove containers and volumes
+	$(dc) down -t0 --volumes --remove-orphans
 
 sh.app: ## Get into www container
 	$(dc) exec app sh

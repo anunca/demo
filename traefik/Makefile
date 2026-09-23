@@ -1,8 +1,8 @@
-.PHONY: help
+.PHONY: help config start stop restart shell logs ps clean
 .DEFAULT_GOAL := help
 
--include .env
 include .env.local
+-include .env
 
 ENV ?= dev
 TAG ?= ${ENV}
@@ -10,40 +10,23 @@ DOCKER_SHELL ?= sh
 
 dc = docker compose -f compose.$(ENV).yml
 
+export TRAEFIK_IMAGE APACHE_IMAGE NGINX_IMAGE DOMAIN_NAME
+
 help h: ## Show help
-	@awk 'BEGIN {FS = ":.*##"} \
-	/^[a-zA-Z0-9_. -]+:.*##/ { \
-		split($$1,a," "); \
-		printf "%-20s %s\n", a[1], $$2 \
-	} \
-	/^##@/ {printf "\n%s\n", substr($$0,5)}' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_. -]+:.*##/ {split($$1,a," "); printf "%-20s %s\n",a[1],$$2}' $(MAKEFILE_LIST)
 
-##@ Docker
-config c: ## Show config
+config c: ## Validate and show Compose config
 	$(dc) config
-
-build b: ## Build images
-	$(dc) build
-
-start s: ## Start containers
+start s: ## Start services
 	$(dc) up -d
-
-stop st: ## Stop containers
+stop st: ## Stop services
 	$(dc) down -t0
-
-restart r: stop start ## Restart
-
-run: ## Run shell
-	$(dc) run --rm --entrypoint $(DOCKER_SHELL) traefik
-
-shell sh: ## Exec shell
+restart r: stop start ## Restart services
+shell sh: ## Open Traefik shell
 	$(dc) exec traefik $(DOCKER_SHELL)
-
 logs l: ## Follow logs
 	$(dc) logs -f
-
-ps: ## List containers
+ps: ## List services
 	$(dc) ps -a
-
-clean.all ca: stop ## Cleanup all docker
-	docker system prune -fa && docker volume prune -fa
+clean: ## Remove this lab's containers and networks
+	$(dc) down --remove-orphans

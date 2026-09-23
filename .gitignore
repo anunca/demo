@@ -1,0 +1,18 @@
+# Local environment overrides
+.env
+
+# macOS / editors
+.DS_Store
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+# Runtime/build artifacts
+dist/
+build/
+coverage/

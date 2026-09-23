@@ -14,7 +14,7 @@ make help
 aws configure list
 ```
 ```sh
-cat <<'EOF'> .env.local
+cat <<'EOF'> .env
 SERVER_NAME=appdemo.name
 DOMAINS=${SERVER_NAME},*.${SERVER_NAME}
 EMAIL=

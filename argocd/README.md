@@ -1,63 +1,75 @@
-# Argo CD
-## overview
-- [doc](#doc)
-- [install](#install)
-- [notes](#notes)
-## doc
-- https://argo-cd.readthedocs.io/en/stable/getting_started/
-## install
+# Argo CD GitOps lab
+
+Deploy a small nginx application to Kubernetes and let Argo CD reconcile its desired state from Git.
+
+## Requirements
+
+- Docker with Compose v2 (only needed to build the sample image)
+- Kubernetes cluster with a current context
+- `kubectl`
+- optional: Argo CD CLI
+
+Confirm the target cluster before applying anything:
+
 ```sh
-make help
+kubectl config current-context
+kubectl cluster-info
 ```
-## notes
-config
+
+## Build the sample image
+
 ```sh
-kubectl config get-contexts
+make config
+make build
 ```
-```sh
-cat <<'EOF' >> .env.local
-GITHUB_TOKEN=YOUR_GITHUB_TOKEN
-EOF
-```
-browse GitHub [packages containers](https://github.com/anunca?ecosystem=container&tab=packages)
-### Argo CD
-install
+
+The Kubernetes manifest expects `ghcr.io/anunca/nginx-app:prod`. If the package is private, create the `ghcr-secret` image-pull secret in the target namespace.
+
+## Install Argo CD
+
 ```sh
 make argocd.install
-```
-check pods
-```sh
 make argocd.ps
 ```
-deploy argocd manifest
+
+Apply the Application resource:
+
 ```sh
 make argocd.apply
 ```
-sync
-- UI
-    - use port forwarding to access
-    ```sh
-    make argocd.forward
-    ```
-    - retrieve admin password
-    ```sh
-    make argocd.password
-    ```
-    - browse [Argo CD](https://localhost:8080/)
-- CLI
+
+The Application tracks `main` under `argocd/k8s` and has automated pruning and self-healing enabled.
+
+## Access Argo CD
+
 ```sh
+make argocd.forward
+```
+
+In another terminal, retrieve the initial admin password:
+
+```sh
+make argocd.password
+```
+
+Then open <https://localhost:8080/>.
+
+With the CLI:
+
+```sh
+argocd app get nginx-app
 argocd app sync nginx-app
 ```
-### check app
+
+## Inspect the workload
+
 ```sh
-kubectl -n default get all
+kubectl get deployment,service,pod
+kubectl port-forward svc/nginx 9000:80
 ```
-get local address to check
-```sh
-kubectl get svc nginx-service
-```
-forward nginx service
-```sh
-kubectl port-forward svc/nginx-service -n default 9000:80
-```
-browse [app](https://localhost:9000/)
+
+Open <http://localhost:9000/>.
+
+## Notes
+
+The deployment uses readiness/liveness probes, resource requests/limits, standard Kubernetes labels, and a ClusterIP service. This is a learning lab; adapt image provenance, namespaces, RBAC, network policies, and resource sizing before using the pattern in production.

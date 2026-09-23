@@ -1,8 +1,8 @@
 .PHONY: help
 .DEFAULT_GOAL := help
 
--include .env
 include .env.local
+-include .env
 
 ENV ?= dev
 TAG ?= ${ENV}
@@ -13,12 +13,7 @@ SUBJECT="/C=FR/ST=Ile-de-France/L=Paris/O=MyCompany/OU=MyOrganizationUnit/CN=${A
 dc = docker compose -f compose.yml -f compose.$(ENV).yml
 
 help h: ## Show help
-	@awk 'BEGIN {FS = ":.*##"} \
-	/^[a-zA-Z0-9_. -]+:.*##/ { \
-		split($$1,a," "); \
-		printf "%-20s %s\n", a[1], $$2 \
-	} \
-	/^##@/ {printf "\n%s\n", substr($$0,5)}' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_. -]+:.*##/ {split($$1,a," "); printf "%-20s %s\n",a[1],$$2}' $(MAKEFILE_LIST)
 
 ##@ Docker
 config c: ## Show config
@@ -47,8 +42,8 @@ logs l: ## Follow logs
 ps: ## List containers
 	$(dc) ps -a
 
-clean.all ca: stop ## Cleanup all docker
-	docker system prune -fa && docker volume prune -fa
+clean: ## Remove containers and volumes
+	$(dc) down -t0 --volumes --remove-orphans
 
 ssc.create: ssc.delete ## Self signed certificate create
 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj "${SUBJECT}" -keyout etc/nginx/certs/${APP_DOMAIN_NAME}.key -out etc/nginx/certs/${APP_DOMAIN_NAME}.crt\

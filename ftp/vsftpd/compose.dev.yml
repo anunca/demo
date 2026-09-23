@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        OS_VERSION:
+        OS_IMAGE:
     restart: always
     volumes:
       - ./data/vsftpd:/var/vsftpd

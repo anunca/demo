@@ -1,6 +1,6 @@
 services:
     certbot:
-        image: $CERTBOT_VERSION
+        image: $CERTBOT_IMAGE
         entrypoint: certbot
         command:
             - certonly
@@ -15,7 +15,7 @@ services:
             - ./etc/letsencrypt:/etc/letsencrypt
             - ./var/log/letsencrypt:/var/log/letsencrypt
     nginx:
-        image: $NGINX_VERSION
+        image: $NGINX_IMAGE
         volumes:
             - ./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf
             - ./etc/letsencrypt:/etc/letsencrypt
@@ -24,12 +24,12 @@ services:
             - 80:80
             - 443:443
     httpd:
-        image: $IMAGE
+        image: $HTTPD_IMAGE
         build:
             context: .
             dockerfile: httpd.Dockerfile
             args:
-                HTTPD_VERSION:
+                HTTPD_IMAGE:
         volumes:
             - ./etc/httpd/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
             - ./etc/letsencrypt:/etc/letsencrypt

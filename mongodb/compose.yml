@@ -1,6 +1,6 @@
 services:
   db:
-    image: $MONGODB_VERSION
+    image: $MONGODB_IMAGE
     volumes:
       - db:/data/db
     environment:

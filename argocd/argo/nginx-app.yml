@@ -4,15 +4,17 @@ metadata:
   name: nginx-app
   namespace: argocd
 spec:
+  project: default
   destination:
     namespace: default
     server: https://kubernetes.default.svc
   source:
-    repoURL: git@github.com:anunca/demo.git
-    path: ./argocd/k8s
-    targetRevision: HEAD
-  project: default
+    repoURL: https://github.com/anunca/demo.git
+    path: argocd/k8s
+    targetRevision: main
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

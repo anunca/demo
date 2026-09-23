@@ -2,7 +2,7 @@ services:
   www:
     depends_on:
       - proxy
-    image: $NGINX_VERSION
+    image: $NGINX_IMAGE
     restart: always
     ports:
       - 80
@@ -10,7 +10,7 @@ services:
   backoffice:
     depends_on:
       - proxy
-    image: $APACHE_VERSION
+    image: $APACHE_IMAGE
     restart: always
     ports:
       - 80
@@ -24,7 +24,7 @@ services:
     build:
       context: .
       args:
-        NGINX_VERSION:
+        NGINX_IMAGE:
         DOMAIN_NAME: $DOMAIN_NAME_SSL
     restart: always
     ports:
