@@ -5,6 +5,7 @@ include .env.local
 -include .env
 
 ENV ?= dev
+TAG ?= ${ENV}
 DOCKER_SHELL ?= sh
 dc = docker compose -f compose.$(ENV).yml
 
@@ -16,7 +17,7 @@ config c: ## Validate and show Compose config
 start s: ## Start services
 	$(dc) up -d
 stop st: ## Stop services
-	$(dc) down
+	$(dc) down -t0
 restart r: stop start ## Restart services
 shell sh: ## Open Traefik shell
 	$(dc) exec traefik $(DOCKER_SHELL)
