@@ -29,7 +29,7 @@ services:
             context: .
             dockerfile: httpd.Dockerfile
             args:
-                HTTPD_VERSION:
+                HTTPD_IMAGE:
         volumes:
             - ./etc/httpd/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
             - ./etc/letsencrypt:/etc/letsencrypt

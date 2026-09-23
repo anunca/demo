@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        OS_VERSION:
+        OS_IMAGE:
     volumes:
       - './data:/home/ftp'
       - etc:/etc/pure-ftpd
