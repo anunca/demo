@@ -1,5 +1,5 @@
-ARG OS_VERSION=ubuntu:20.04
-FROM $OS_VERSION
+ARG OS_IMAGE=ubuntu:20.04
+FROM $OS_IMAGE
 
 RUN apt update -qq\
   && apt install -y openssh-server\
