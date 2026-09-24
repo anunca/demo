@@ -1,6 +1,6 @@
-ARG OS_VERSION=ubuntu:20.04
+ARG OS_IMAGE=alpine:3.23.4
 
-FROM $OS_VERSION
+FROM $OS_IMAGE
 
 RUN apt update -qq\
   && apt install -y nfs-kernel-server\
