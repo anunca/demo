@@ -1,4 +1,4 @@
-ARG OS_IMAGE=alpine:3.23.4
+ARG OS_IMAGE=ubuntu:20.04
 
 FROM $OS_IMAGE
 
