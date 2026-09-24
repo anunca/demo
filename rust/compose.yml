@@ -3,5 +3,5 @@ services:
     build:
       context: .
       args:
-        RUST_VERSION:
-    image: $IMAGE
+        RUST_IMAGE:
+    image: $APP_IMAGE
