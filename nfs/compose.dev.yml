@@ -1,11 +1,11 @@
 services:
   nfs:
-    image: $IMAGE
+    image: $APP_IMAGE
     build:
       context: .
       dockerfile: $DOCKERFILE
       args:
-        OS_VERSION:
+        OS_IMAGE:
         NFS_DIRECTORY:
         NFS_HOST:
         NFS_OPTIONS:
