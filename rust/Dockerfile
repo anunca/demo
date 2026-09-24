@@ -1,6 +1,6 @@
-ARG RUST_VERSION=rust:1.98.0-alpine
+ARG RUST_IMAGE=rust:1.98.0-alpine
 
-FROM $RUST_VERSION AS base
+FROM $RUST_IMAGE AS base
 
 WORKDIR /app
 
