@@ -19,7 +19,6 @@ COPY etc/php/php-fpm.conf $($PHP_INI_DIR}-fpm.d/zz-docker.conf
 
 #php opcache
 COPY <<EOF $PHP_INI_DIR/conf.d/docker-php-ext-opcache.ini
-zend_extension=opcache
 [opcache]
 opcache.enable=1
 opcache.enable_cli=1
