@@ -1,0 +1,8 @@
+server {
+    listen 80;
+    server_name app.app.internal;
+    
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+}

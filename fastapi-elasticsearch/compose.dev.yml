@@ -1,0 +1,11 @@
+services:
+
+  app:
+    build:
+      args:
+        PYTHON_IMAGE:
+      target: dev
+    ports:
+      - "127.0.0.1:5678:5678" # For debugger in dev
+    volumes:
+      - ./src:/app # Hot reload

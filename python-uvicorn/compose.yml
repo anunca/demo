@@ -1,0 +1,16 @@
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      args:
+        PYTHON_IMAGE:
+    image: $APP_IMAGE
+    ports:
+      - "8000:8000"
+  nginx:
+    image: $NGINX_IMAGE
+    volumes:
+      - ./etc/nginx/app.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"

@@ -1,0 +1,31 @@
+providers:
+  docker: {}
+
+entrypoints:
+  web:
+    address: ':80'
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ':443'
+
+tls:
+  certificates:
+    - certFile: /etc/certs/nginx.localhost.crt
+      keyFile: /etc/certs/nginx.localhost.key
+    - certFile: /etc/certs/apache.localhost.crt
+      keyFile: /etc/certs/apache.localhost.key
+  # stores:
+  #   default:
+  #     defaultCertificate:
+  #       certFile: /etc/certs/localhost.crt
+  #       keyFile: /etc/certs/localhost.key
+
+log:
+  level: DEBUG
+
+api:
+  insecure: true

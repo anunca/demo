@@ -1,0 +1,23 @@
+http://localhost {
+	respond "Hello, world!"
+}
+
+appdemo.name caddy.appdemo.name {
+	tls {
+		dns route53 {
+			max_retries 10
+			profile default
+			region eu-west-3
+		}
+	}
+
+	root * /srv/public
+
+	encode zstd br gzip
+
+	php_fastcgi unix//var/run/php-fpm.sock {
+			index index.php
+	}
+
+	file_server
+}

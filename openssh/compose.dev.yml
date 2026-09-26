@@ -1,0 +1,13 @@
+services:
+  openssh:
+    image: $APP_IMAGE
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        OS_IMAGE:
+        USERNAME:
+    volumes:
+      - ./data:/home/$USERNAME
+    ports:
+      - '2222:22'

@@ -1,0 +1,31 @@
+services:
+  haproxy:
+    build:
+      context: .
+      dockerfile: dockerfile/Dockerfile.haproxy
+      args:
+        HAPROXY_IMAGE:
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+  nginx1:
+    build:
+      context: .
+      dockerfile: dockerfile/Dockerfile.nginx
+      args:
+        NGINX_IMAGE:
+  nginx2:
+    build:
+      context: .
+      dockerfile: dockerfile/Dockerfile.nginx
+      args:
+        NGINX_IMAGE:
+    volumes:
+      - ./src:/usr/share/nginx/html
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile/Dockerfile.php
+      args:
+        PHP_IMAGE:

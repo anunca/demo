@@ -1,0 +1,41 @@
+services:
+  www:
+    depends_on:
+      - proxy
+    image: $NGINX_IMAGE
+    restart: always
+    ports:
+      - 80
+      - 443
+  backoffice:
+    depends_on:
+      - proxy
+    image: $APACHE_IMAGE
+    restart: always
+    ports:
+      - 80
+      - 443
+  app:
+    image: $PHP_IMAGE
+    volumes:
+      - ./src:/var/www/html
+  proxy:
+    image: $APP_IMAGE
+    build:
+      context: .
+      args:
+        NGINX_IMAGE:
+        DOMAIN_NAME: $DOMAIN_NAME_SSL
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /dev/stderr /var/log/nginx/error.log
+      - /dev/stdout /var/log/nginx/access.log
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost/health" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s

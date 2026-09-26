@@ -1,0 +1,9 @@
+services:
+  base:
+    build:
+      target: $ENV
+    image: $BASE_IMAGE:$ENV
+  app:
+    image: $APP_IMAGE:$ENV
+    build:
+      target: $ENV

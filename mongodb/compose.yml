@@ -1,0 +1,11 @@
+services:
+  db:
+    image: $MONGODB_IMAGE
+    volumes:
+      - db:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: db
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+volumes:
+  db:

@@ -1,0 +1,7 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        RUST_IMAGE:
+    image: $APP_IMAGE

@@ -1,0 +1,17 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: $APP_IMAGE
+    tty: true
+  db:
+    image: postgres:12.6-alpine
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: db
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:

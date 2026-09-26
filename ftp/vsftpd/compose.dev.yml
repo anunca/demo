@@ -1,0 +1,14 @@
+services:
+  vsftpd:
+    image: $APP_IMAGE
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        OS_IMAGE:
+    restart: always
+    volumes:
+      - ./data/vsftpd:/var/vsftpd
+    ports:
+      - '20-21:20-21'
+    tty: true

@@ -1,0 +1,8 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        HTTPD_MOD_PHP:
+    ports:
+      - 80:80

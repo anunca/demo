@@ -1,0 +1,20 @@
+services:
+  app:
+    image: $PHP_IMAGE
+    # working_dir: /var/www/html/app
+  varnish:
+    depends_on:
+      - app
+    image: $VARNISH_IMAGE
+    # tmpfs: 
+    #   - /var/lib/varnish:exec
+    restart: unless-stopped
+    command:
+      [
+        "varnishd",
+        "-F",
+        "-f",
+        "/etc/varnish/default.vcl",
+        "-t",
+        "0"
+      ]

@@ -1,0 +1,20 @@
+# Default reviewers for the whole repo
+*       @anunca/demo/library
+
+*               @anunca
+
+# Frontend code
+frontend/       @alice @bob
+
+# Backend code
+backend/        @charlie @dana
+
+# Shared components
+shared/         @alice @charlie
+
+# Specific files
+README.md       @eve
+package.json    @bob
+
+# JavaScript files anywhere
+*.js            @team/javascript

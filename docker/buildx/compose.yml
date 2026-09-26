@@ -1,0 +1,21 @@
+services:
+  base:
+    build:
+      context: .
+      dockerfile: dockerfile/base.Dockerfile
+      args:
+        BUSYBOX_IMAGE:
+  app:
+    depends_on:
+      - base
+    build:
+      context: .
+      x-bake:
+        platforms:
+          - linux/amd64
+          - linux/arm64
+      dockerfile: dockerfile/app.Dockerfile
+      args:
+        NGINX_IMAGE:
+    ports:
+      - 80:80

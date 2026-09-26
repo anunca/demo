@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+# Run PHP from the current project's Docker Compose "app" service.
+# Intended as a global executable for VS Code's PHP validator.
+set -euo pipefail
+
+find_project_root() {
+    local directory="$1"
+    local parent
+
+    while [[ "$directory" != "/" ]]; do
+        if [[ -f "$directory/compose.dev.yml" || -f "$directory/compose.yml" ]]; then
+            printf '%s\n' "$directory"
+            return 0
+        fi
+
+        parent="$(dirname "$directory")"
+        [[ "$parent" == "$directory" ]] && break
+        directory="$parent"
+    done
+
+    return 1
+}
+
+starting_directory="$PWD"
+for argument in "$@"; do
+    if [[ -f "$argument" ]]; then
+        starting_directory="$(cd "$(dirname "$argument")" && pwd -P)"
+        break
+    fi
+done
+
+project_root="$(find_project_root "$starting_directory" || true)"
+if [[ -z "$project_root" ]]; then
+    echo "php-docker: could not find compose.dev.yml above $starting_directory" >&2
+    exit 1
+fi
+
+export TAG="${TAG:-dev}"
+
+compose=(docker compose --project-directory "$project_root")
+if [[ -f "$project_root/.env.local" ]]; then
+    compose+=(--env-file "$project_root/.env.local")
+fi
+if [[ -f "$project_root/compose.yml" ]]; then
+    compose+=(-f "$project_root/compose.yml")
+fi
+if [[ -f "$project_root/compose.dev.yml" ]]; then
+    compose+=(-f "$project_root/compose.dev.yml")
+else
+    compose+=(-f "$project_root/compose.yml")
+fi
+
+# This project's Compose service mounts ./src at /var/www/html. For projects
+# that mount their root instead, retain the same conventional container path.
+host_source="$project_root"
+if [[ -d "$project_root/src" ]]; then
+    host_source="$project_root/src"
+fi
+
+php_arguments=()
+for argument in "$@"; do
+    absolute_argument="$argument"
+    if [[ "$argument" != /* && -e "$project_root/$argument" ]]; then
+        absolute_argument="$project_root/$argument"
+    fi
+
+    if [[ "$absolute_argument" == "$host_source/"* ]]; then
+        php_arguments+=("/var/www/html/${absolute_argument#"$host_source/"}")
+    else
+        php_arguments+=("$argument")
+    fi
+done
+
+cd "$project_root"
+if [[ -n "$("${compose[@]}" ps --quiet app)" ]]; then
+    exec "${compose[@]}" exec --no-TTY app php "${php_arguments[@]}"
+fi
+
+exec "${compose[@]}" run --rm --no-deps app php "${php_arguments[@]}"

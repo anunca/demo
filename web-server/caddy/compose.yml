@@ -1,0 +1,31 @@
+services:
+  web:
+    depends_on:
+      - app
+    build:
+      context: .
+      dockerfile: dockerfile/caddy.Dockerfile
+      args:
+        CADDY_BUILDER_IMAGE:
+        CADDY_IMAGE:
+    volumes:
+      - ~/.aws:/root/.aws
+      - caddy_data:/data
+      - caddy_config:/config
+      - var_run:/var/run
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile/php.Dockerfile
+      args:
+        PHP_IMAGE:
+    volumes:
+      - var_run:/var/run
+volumes:
+  caddy_data:
+  caddy_config:
+  var_run:

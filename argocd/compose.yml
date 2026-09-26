@@ -1,0 +1,9 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile/nginx.Dockerfile
+      args:
+        NGINX_IMAGE:
+    ports:
+      - 80:80

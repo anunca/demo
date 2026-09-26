@@ -1,0 +1,21 @@
+{
+  "name": "@anunca/library",
+  "version": "1.0.2-test",
+  "description": "## Overview - [Documentation](#documentation) - [Dependencies](#dependencies) - [Use](#use) - [Notes](#notes)",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anunca/demo/library.git"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

@@ -1,0 +1,24 @@
+services:
+  nfs:
+    image: $APP_IMAGE
+    build:
+      context: .
+      dockerfile: $DOCKERFILE
+      args:
+        OS_IMAGE:
+        NFS_DIRECTORY:
+        NFS_HOST:
+        NFS_OPTIONS:
+          # cap_add:
+          #   - ALL
+    privileged: true
+    ports:
+      - 2049
+    volumes:
+      - data:$NFS_DIRECTORY
+    environment:
+      NFS_DIRECTORY:
+      NFS_HOST:
+      NFS_OPTIONS:
+volumes:
+  data:

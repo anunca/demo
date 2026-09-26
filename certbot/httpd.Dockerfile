@@ -1,0 +1,25 @@
+ARG HTTPD_VERSION=$HTTPD_VERSION
+
+FROM $HTTPD_VERSION
+
+#conf enable SSL
+RUN sed -i '\
+  s/^#\(Include .*httpd-ssl.conf\)/\1/;\
+  s/^#\(LoadModule .*mod_ssl.so\)/\1/;\
+  s/^#\(LoadModule .*mod_socache_shmcb.so\)/\1/;\
+  s/^#\(LoadModule .*mod_rewrite.so\)/\1/;\
+  ' conf/httpd.conf
+
+#conf disable default files SSL
+#in /usr/local/apache2/conf/{server.crt,server.key}
+RUN sed -i '\
+  s/^\(.*\)www.example.com\(.*\)/\1 appdemo.name\2/;\
+  s/^\(SSLEngine on\)/#\1/;\
+  s/^\(SSLCertificateFile .*server.crt"\)/#\1/;\
+  s/^\(SSLCertificateKeyFile .*server.key"\)/#\1/;\
+  ' conf/extra/httpd-ssl.conf
+
+#conf enable vhost
+RUN sed -i '\
+  s/^#\(Include .*httpd-vhosts.conf\)/\1/;\
+  ' conf/httpd.conf

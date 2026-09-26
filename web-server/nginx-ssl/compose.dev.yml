@@ -1,0 +1,19 @@
+services:
+  app:
+    # build:
+    #   dockerfile: Dockerfile
+    #   context: .
+    #   args:
+    #     NGINX_IMAGE:
+    #     APP_DOMAIN_NAME:
+    image: $NGINX_IMAGE
+    volumes:
+      - ./etc/nginx/conf.d/_default.conf:/etc/nginx/templates/_default.conf.template
+      - ./etc/nginx/html/default.html:/usr/share/nginx/html/default.html
+      - ./etc/nginx/conf.d/app.conf:/etc/nginx/templates/app.conf.template
+      - ./etc/nginx/ssl:/etc/nginx/ssl:ro
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      APP_DOMAIN_NAME:
