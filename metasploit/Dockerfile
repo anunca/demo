@@ -9,8 +9,10 @@ RUN curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/conf
     && ./msfinstall\
     && rm msfinstall
 
+# hadolint ignore=DL4006
 RUN echo "root:root" | chpasswd
 
+# hadolint ignore=DL4006
 RUN useradd -s /bin/bash -d /home/metasploit/ -m -G sudo metasploit\
     && echo "metasploit:metasploit" | chpasswd
 
