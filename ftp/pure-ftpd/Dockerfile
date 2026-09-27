@@ -1,8 +1,8 @@
 ARG OS_IMAGE=ubuntu:20.04
 FROM $OS_IMAGE
 
-RUN apt update -qq\
-  && apt install -y pure-ftpd\
+RUN apt-get update -qq\
+  && apt-get install -y pure-ftpd\
   && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd ftpgroup\
