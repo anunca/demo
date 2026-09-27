@@ -4,7 +4,8 @@ FROM $PYTHON_IMAGE AS builder
 
 WORKDIR /app
 
-RUN pip install --upgrade pip
+# hadolint ignore=DL3013
+RUN pip install --no-cache-dir --upgrade pip
 
 COPY src/requirements requirements
 RUN pip install --no-cache-dir -r requirements/dev.txt
