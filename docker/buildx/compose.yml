@@ -2,7 +2,7 @@ services:
   base:
     build:
       context: .
-      dockerfile: dockerfile/base.Dockerfile
+      dockerfile: Dockerfile.busybox
       args:
         BUSYBOX_IMAGE:
   app:
@@ -14,7 +14,7 @@ services:
         platforms:
           - linux/amd64
           - linux/arm64
-      dockerfile: dockerfile/app.Dockerfile
+      dockerfile: Dockerfile.nginx
       args:
         NGINX_IMAGE:
     ports:

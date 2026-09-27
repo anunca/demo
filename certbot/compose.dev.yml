@@ -27,7 +27,7 @@ services:
         image: $HTTPD_IMAGE
         build:
             context: .
-            dockerfile: httpd.Dockerfile
+            dockerfile: Dockerfile.httpd
             args:
                 HTTPD_IMAGE:
         volumes:

@@ -2,7 +2,7 @@ services:
   haproxy:
     build:
       context: .
-      dockerfile: dockerfile/Dockerfile.haproxy
+      dockerfile: Dockerfile.haproxy
       args:
         HAPROXY_IMAGE:
     ports:
@@ -12,13 +12,13 @@ services:
   nginx1:
     build:
       context: .
-      dockerfile: dockerfile/Dockerfile.nginx
+      dockerfile: Dockerfile.nginx
       args:
         NGINX_IMAGE:
   nginx2:
     build:
       context: .
-      dockerfile: dockerfile/Dockerfile.nginx
+      dockerfile: Dockerfile.nginx
       args:
         NGINX_IMAGE:
     volumes:
@@ -26,6 +26,6 @@ services:
   app:
     build:
       context: .
-      dockerfile: dockerfile/Dockerfile.php
+      dockerfile: Dockerfile.php-fpm
       args:
         PHP_IMAGE:

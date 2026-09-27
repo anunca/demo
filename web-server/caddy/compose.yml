@@ -4,7 +4,7 @@ services:
       - app
     build:
       context: .
-      dockerfile: dockerfile/caddy.Dockerfile
+      dockerfile: Dockerfile.caddy
       args:
         CADDY_BUILDER_IMAGE:
         CADDY_IMAGE:
@@ -20,7 +20,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: dockerfile/php.Dockerfile
+      dockerfile: Dockerfile.php-fpm
       args:
         PHP_IMAGE:
     volumes:

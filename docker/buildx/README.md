@@ -16,7 +16,7 @@ prod
 export ENV=prod
 ```
 ```sh
-cat <<'EOF' >> .env.local
+cat <<'EOF' >> .env
 GITHUB_TOKEN=YOUR_GITHUB_TOKEN
 EOF
 ```

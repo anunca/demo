@@ -2,7 +2,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: dockerfile/nginx.Dockerfile
+      dockerfile: Dockerfile.nginx
       args:
         NGINX_IMAGE:
     ports:
