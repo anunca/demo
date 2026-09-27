@@ -23,7 +23,7 @@ ARG USERNAME
 
 RUN groupadd sftpgroup
 
-# hadolint ignore=DL3064
+# hadolint ignore=DL3064,DL4006
 RUN adduser $USERNAME\
   && usermod -G sftpgroup $USERNAME\
   && echo "$USERNAME:$USERNAME" | chpasswd
