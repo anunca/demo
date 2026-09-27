@@ -1,8 +1,10 @@
 ARG OS_IMAGE=ubuntu:20.04
 FROM $OS_IMAGE
 
-RUN apt update -qq\
-  && apt install -y openssh-server\
+WORKDIR /root
+
+RUN apt-get update -qq\
+  && apt-get install -y openssh-server\
   && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /var/run/sshd
@@ -21,6 +23,7 @@ ARG USERNAME
 
 RUN groupadd sftpgroup
 
+# hadolint ignore=DL3064
 RUN adduser $USERNAME\
   && usermod -G sftpgroup $USERNAME\
   && echo "$USERNAME:$USERNAME" | chpasswd
