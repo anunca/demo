@@ -19,11 +19,12 @@ COPY sh/chroot.sh .
 RUN bash chroot.sh\
   && rm chroot.sh
 
+# hadolint ignore=DL3064
 ARG USERNAME
 
 RUN groupadd sftpgroup
 
-# hadolint ignore=DL3064,DL4006
+# hadolint ignore=DL4006
 RUN adduser $USERNAME\
   && usermod -G sftpgroup $USERNAME\
   && echo "$USERNAME:$USERNAME" | chpasswd
