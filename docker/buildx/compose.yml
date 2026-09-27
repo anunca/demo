@@ -15,8 +15,9 @@ services:
           - linux/amd64
           - linux/arm64
       dockerfile: Dockerfile.nginx
+      additional_contexts:
+        base: service:base
       args:
         NGINX_IMAGE:
-        BASE_IMAGE:
     ports:
       - 80:80
