@@ -1,9 +1,14 @@
-ARG NGINX_IMAGE=nginx:1.27.2-alpine
+ARG NGINX_IMAGE=nginx:1.31.4-alpine
+
+# hadolint ignore=DL3006
+FROM base AS base-dev
+# hadolint ignore=DL3006
+FROM base AS base-prod
 
 FROM $NGINX_IMAGE AS dev
 
-COPY --from=register.app.internal/docker-buildx/base:dev /usr/share/nginx/html/index.html /usr/share/nginx/html/index.html
+COPY --from=base-dev /usr/share/nginx/html/index.html /usr/share/nginx/html/index.html
 
 FROM $NGINX_IMAGE AS prod
 
-COPY --from=register.app.internal/docker-buildx/base:prod /usr/share/nginx/html/index.html /usr/share/nginx/html/index.html
+COPY --from=base-prod /usr/share/nginx/html/index.html /usr/share/nginx/html/index.html

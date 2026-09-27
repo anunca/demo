@@ -1,10 +1,17 @@
 ARG OS_VERSION=centos:7.9.2009
 FROM $OS_VERSION
 
-RUN yum update -y\
+# CentOS 7 is EOL; use the archived vault repositories.
+RUN sed -i \
+      -e 's|^mirrorlist=|#mirrorlist=|g' \
+      -e 's|^#baseurl=http://mirror.centos.org/centos/\$releasever|baseurl=https://vault.centos.org/7.9.2009|g' \
+      /etc/yum.repos.d/CentOS-*.repo\
+  && yum update -y\
   && yum install -y vsftpd\
-  && yum clean all
+  && yum clean all\
+  && rm -rf /var/cache/yum
 
+# hadolint ignore=DL4006
 RUN echo 'root:root' | chpasswd\
   && mkdir /var/vsftpd\
   && chmod 777 /var/vsftpd
@@ -32,4 +39,4 @@ RUN sed -i '\
 
 EXPOSE 20-21
 
-ENTRYPOINT &>/dev/null /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf
+ENTRYPOINT ["/usr/sbin/vsftpd", "/etc/vsftpd/vsftpd.conf"]

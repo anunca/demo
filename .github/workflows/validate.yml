@@ -9,21 +9,62 @@ permissions:
   contents: read
 
 jobs:
-  repository:
+  config:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
-
       - name: Check whitespace
         run: git diff --check
-
       - name: Validate Docker Compose projects
         shell: bash
         run: |
           set -euo pipefail
           while IFS= read -r file; do
-            echo "::group::$file"
             dir="$(dirname "$file")"
+            echo "::group::$dir"
             make -C "$dir" config
+            echo "::endgroup::"
+          done < <(find . -type f -name 'compose.dev.yml' -print | sort)
+
+  dockerfile-lint:
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: Lint Dockerfiles
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -d '' dockerfiles < <(
+            find . -type f \
+              \( -name 'Dockerfile' -o -name 'Dockerfile.*' \) \
+              -print0
+          )
+          printf 'Linting %d Dockerfiles\n' "${#dockerfiles[@]}"
+          (("${#dockerfiles[@]}" > 0)) || { echo "No Dockerfiles found"; exit 1; }
+          docker run --rm \
+            -v "$PWD:/workspace" \
+            -w /workspace \
+            hadolint/hadolint:v2.15.1-alpine \
+            hadolint --config .hadolint.yaml "${dockerfiles[@]}"
+
+  build:
+    needs: [config, dockerfile-lint]
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build Docker Compose projects
+        shell: bash
+        env:
+          REGISTRY: local
+        run: |
+          set -euo pipefail
+          while IFS= read -r file; do
+            dir="$(dirname "$file")"
+            echo "::group::$dir"
+            if [[ "$dir" == "./docker/buildx" ]]; then
+              make -C "$dir" REGISTRY=local build
+            else
+              make -C "$dir" build
+            fi
             echo "::endgroup::"
           done < <(find . -type f -name 'compose.dev.yml' -print | sort)
