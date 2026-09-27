@@ -2,8 +2,8 @@ ARG OS_IMAGE=ubuntu:20.04
 
 FROM $OS_IMAGE
 
-RUN apt update -qq\
-  && apt install -y nfs-kernel-server\
+RUN apt-get update -qq\
+  && apt-get install -y nfs-kernel-server\
   && rm -rf /var/lib/apt/lists/*
 
 COPY etc/exports /etc/exports
