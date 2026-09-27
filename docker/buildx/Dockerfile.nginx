@@ -1,12 +1,13 @@
 ARG NGINX_IMAGE=nginx:1.31.4-alpine
 ARG BASE_IMAGE=register.app.internal/docker-buildx/base
 
+FROM $BASE_IMAGE:dev AS base-dev
+FROM $BASE_IMAGE:prod AS base-prod
+
 FROM $NGINX_IMAGE AS dev
 
-ARG BASE_IMAGE
-COPY --from=$BASE_IMAGE:dev /usr/share/nginx/html/index.html /usr/share/nginx/html/index.html
+COPY --from=base-dev /usr/share/nginx/html/index.html /usr/share/nginx/html/index.html
 
 FROM $NGINX_IMAGE AS prod
 
-ARG BASE_IMAGE
-COPY --from=$BASE_IMAGE:prod /usr/share/nginx/html/index.html /usr/share/nginx/html/index.html
+COPY --from=base-prod /usr/share/nginx/html/index.html /usr/share/nginx/html/index.html
