@@ -17,5 +17,6 @@ services:
       dockerfile: Dockerfile.nginx
       args:
         NGINX_IMAGE:
+        BASE_IMAGE:
     ports:
       - 80:80
