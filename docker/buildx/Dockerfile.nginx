@@ -1,8 +1,7 @@
 ARG NGINX_IMAGE=nginx:1.31.4-alpine
-ARG BASE_IMAGE=register.app.internal/docker-buildx/base
 
-FROM $BASE_IMAGE:dev AS base-dev
-FROM $BASE_IMAGE:prod AS base-prod
+FROM base AS base-dev
+FROM base AS base-prod
 
 FROM $NGINX_IMAGE AS dev
 
