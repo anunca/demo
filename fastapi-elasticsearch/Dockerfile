@@ -9,6 +9,7 @@ RUN apk add --no-cache --virtual .virtual curl\
 # Create app directory
 WORKDIR /app
 
+# hadolint ignore=DL3013
 RUN pip install --no-cache-dir --upgrade pip
 
 FROM base AS dev
