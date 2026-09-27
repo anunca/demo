@@ -1,6 +1,8 @@
 ARG NGINX_IMAGE=nginx:1.31.4-alpine
 
+# hadolint ignore=DL3006
 FROM base AS base-dev
+# hadolint ignore=DL3006
 FROM base AS base-prod
 
 FROM $NGINX_IMAGE AS dev
