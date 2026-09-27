@@ -61,6 +61,10 @@ jobs:
           while IFS= read -r file; do
             dir="$(dirname "$file")"
             echo "::group::$dir"
-            make -C "$dir" build
+            if [[ "$dir" == "./docker/buildx" ]]; then
+              make -C "$dir" REGISTRY=local build
+            else
+              make -C "$dir" build
+            fi
             echo "::endgroup::"
           done < <(find . -type f -name 'compose.dev.yml' -print | sort)
