@@ -5,6 +5,7 @@ RUN yum update -y\
   && yum install -y vsftpd\
   && yum clean all
 
+# hadolint ignore=DL4006
 RUN echo 'root:root' | chpasswd\
   && mkdir /var/vsftpd\
   && chmod 777 /var/vsftpd
@@ -32,4 +33,4 @@ RUN sed -i '\
 
 EXPOSE 20-21
 
-ENTRYPOINT &>/dev/null /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf
+ENTRYPOINT ["/usr/sbin/vsftpd", "/etc/vsftpd/vsftpd.conf"]
