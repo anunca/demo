@@ -6,11 +6,12 @@ WORKDIR /app
 
 FROM base AS dev
 
-CMD [ "cargo"]
+COPY src .
 
-FROM dev AS build
-
+CMD [ "cargo", "run" ]
 
 FROM base AS prod
 
-CMD [ "cargo", "-r" ]
+COPY src .
+
+CMD [ "cargo", "run", "-r" ]
