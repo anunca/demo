@@ -1,7 +1,7 @@
 ARG CADDY_BUILDER_IMAGE=caddy:2.11.4-builder-alpine
 ARG CADDY_IMAGE=caddy:2.11.4-alpine
 
-FROM $CADDY_BUILDER_IMAGE AS builder
+FROM $CADDY_BUILDER_IMAGE AS caddy-builder
 
 #Caddy plugin
 RUN xcaddy build \
@@ -9,15 +9,17 @@ RUN xcaddy build \
   #AWS Route 53 DNS plugin
   --with github.com/caddy-dns/route53
 
-FROM $CADDY_IMAGE AS runner
+FROM $CADDY_IMAGE AS base
 
-COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+COPY --from=caddy-builder /usr/bin/caddy /usr/bin/caddy
 
 WORKDIR /srv
 
-FROM runner AS dev
+FROM base AS dev
 
-FROM runner AS prod
+COPY src .
+
+FROM base AS prod
 
 #Caddy conf
 COPY etc/caddy/Caddyfile /etc/caddy/Caddyfile

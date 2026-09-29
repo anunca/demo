@@ -9,6 +9,8 @@ FROM base AS dev
 #php conf
 RUN cp $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 
+COPY src .
+
 FROM base AS prod
 
 #php conf
