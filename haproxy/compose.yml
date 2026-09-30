@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile.haproxy
       args:
         HAPROXY_IMAGE:
+    image: $LB_IMAGE
     ports:
       - 80:80
       - 443:443
@@ -15,12 +16,16 @@ services:
       dockerfile: Dockerfile.nginx
       args:
         NGINX_IMAGE:
+    image: $WEB_IMAGE
+    volumes:
+      - ./src:/usr/share/nginx/html
   nginx2:
     build:
       context: .
       dockerfile: Dockerfile.nginx
       args:
         NGINX_IMAGE:
+    image: $WEB_IMAGE
     volumes:
       - ./src:/usr/share/nginx/html
   app:
@@ -29,3 +34,4 @@ services:
       dockerfile: Dockerfile.php-fpm
       args:
         PHP_IMAGE:
+    image: $APP_IMAGE

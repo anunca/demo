@@ -1,13 +1,11 @@
 services:
   haproxy:
-    image: demo/haproxy:dev
     build:
       target: dev
     volumes:
       - ./etc/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
       - ./etc/nginx/certs/:/usr/local/etc/haproxy/certs/
   nginx1:
-    image: demo/haproxy-nginx:dev
     build:
       target: dev
     volumes:
@@ -15,7 +13,6 @@ services:
       - ./etc/nginx/certs/:/etc/nginx/certs/
       - ./src:/usr/share/nginx/html
   nginx2:
-    image: demo/haproxy-nginx:dev
     build:
       target: dev
     volumes:
@@ -23,7 +20,6 @@ services:
       - ./etc/nginx/certs/:/etc/nginx/certs/
       - ./src:/usr/share/nginx/html
   app:
-    image: demo/haproxy-php:dev
     build:
       target: dev
     volumes:
