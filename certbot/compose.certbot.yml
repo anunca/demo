@@ -1,0 +1,8 @@
+services:
+    certbot:
+        image: $CERTBOT_IMAGE
+        entrypoint: certbot
+        volumes:
+            - ~/.aws:/root/.aws
+            - ./etc/letsencrypt:/etc/letsencrypt
+            - ./var/log/letsencrypt:/var/log/letsencrypt

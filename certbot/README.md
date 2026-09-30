@@ -17,7 +17,7 @@ aws configure list
 cat <<'EOF'> .env
 SERVER_NAME=appdemo.name
 DOMAINS=${SERVER_NAME},*.${SERVER_NAME}
-EMAIL=
+EMAIL=admin@appdemo.name
 EOF
 ```
 ```sh
@@ -26,12 +26,20 @@ cat <<EOF | sudo tee -a /etc/hosts > /dev/null
 127.0.0.1 www.appdemo.name
 EOF
 ```
-- certificates
+- create certificates
+    - test create
+    ```sh
+    make certbot.dry.run
+    ```
     - create
     ```sh
-    make run.certbot
+    make certbot.run
     ```
     - check ./etc/letsencrypt/live
+- start
+```sh
+make start
+```
 - browse
     - [appdemo](http://appdemo.name)
     - [www appdemo](http://www.appdemo.name)

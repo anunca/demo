@@ -1,19 +1,4 @@
 services:
-    certbot:
-        image: $CERTBOT_IMAGE
-        entrypoint: certbot
-        command:
-            - certonly
-            - -n
-            - --agree-tos
-            - -m $EMAIL
-            - --dns-route53
-            - -d $DOMAINS
-            # - --dry-run
-        volumes:
-            - ~/.aws:/root/.aws
-            - ./etc/letsencrypt:/etc/letsencrypt
-            - ./var/log/letsencrypt:/var/log/letsencrypt
     nginx:
         image: $NGINX_IMAGE
         volumes:

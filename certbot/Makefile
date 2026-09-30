@@ -10,7 +10,10 @@ ENV ?= dev
 TAG ?= ${ENV}
 DOCKER_SHELL ?= sh
 
+dc_certbot = docker compose -f compose.certbot.yml
 dc = docker compose -f compose.$(ENV).yml
+
+CERTONLY=certonly -n --agree-tos -m $$EMAIL --dns-route53 -d $$DOMAINS
 
 help h: ## Show help
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_. -]+:.*##/ {split($$1,a," "); printf "%-20s %s\n",a[1],$$2}' $(MAKEFILE_LIST)
@@ -23,7 +26,11 @@ build b: ## Build images
 	$(dc) build
 
 start s: ## Start containers
-	$(dc) up -d
+	$(MAKE) start.nginx
+start.nginx: ## Start containers
+	$(dc) up -d nginx
+start.httpd: ## Start containers
+	$(dc) up -d httpd
 
 stop st: ## Stop containers
 	$(dc) down -t0
@@ -31,7 +38,11 @@ stop st: ## Stop containers
 restart r: stop start ## Restart
 
 run: ## Run shell
-	$(dc) run --rm --entrypoint $(DOCKER_SHELL) app
+	$(MAKE) run.nginx
+run.nginx: ## Run shell
+	$(dc) run --rm --entrypoint ${DOCKER_SHELL} nginx
+run.httpd: ## Run shell
+	$(dc) run --rm --entrypoint ${DOCKER_SHELL} httpd
 
 shell sh: ## Exec shell
 	$(dc) exec app $(DOCKER_SHELL)
@@ -45,14 +56,9 @@ ps: ## List containers
 clean: ## Remove containers and volumes
 	$(dc) down -t0 --volumes --remove-orphans
 
-run.certbot:
-	$(dc) run --rm certbot
-run.nginx:
-	$(dc) run --rm --entrypoint ${DOCKER_SHELL} nginx
-run.httpd:
-	$(dc) run --rm --entrypoint ${DOCKER_SHELL} httpd
+##@ Cerbot
+certbot.dry.run cdr: ## Dry run cerbot
+	$(dc_certbot) run --rm certbot ${CERTONLY} --dry-run
 
-start.nginx:
-	$(dc) up -d nginx
-start.httpd:
-	$(dc) up -d httpd
+certbot.run cr: ## Run cerbot
+	$(dc_certbot) run --rm certbot ${CERTONLY}
