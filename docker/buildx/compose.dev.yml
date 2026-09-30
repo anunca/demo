@@ -1,9 +1,9 @@
 services:
   base:
     build:
-      target: $ENV
-    image: $BASE_IMAGE:$ENV
+      target: dev
+    image: $BASE_IMAGE
   app:
-    image: $APP_IMAGE:$ENV
+    image: $APP_IMAGE
     build:
-      target: $ENV
+      target: dev
