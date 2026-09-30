@@ -10,7 +10,7 @@ services:
       - ./etc/certs/:/etc/certs/
       - /var/run/docker.sock:/var/run/docker.sock:ro
   apache:
-    image: $APACHE_IMAGE
+    image: $HTTPD_IMAGE
     ports:
       - 80
     labels:

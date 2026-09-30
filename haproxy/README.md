@@ -21,7 +21,7 @@ export ENV=prod
 make ssc.create
 ```
 ```sh
-cat <<EOF>> /etc/hosts 
+cat <<EOF | sudo tee -a /etc/hosts
 127.0.0.1 appdemo.name
 127.0.0.1 haproxy.appdemo.name
 EOF

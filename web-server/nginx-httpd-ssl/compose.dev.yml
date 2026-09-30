@@ -10,7 +10,7 @@ services:
   backoffice:
     depends_on:
       - proxy
-    image: $APACHE_IMAGE
+    image: $HTTPD_IMAGE
     restart: always
     ports:
       - 80

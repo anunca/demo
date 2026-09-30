@@ -17,7 +17,7 @@ make certs\
 && make stop build start
 ```
 ```sh
-cat <<EOF >> /etc/hosts
+cat <<EOF | sudo tee -a /etc/hosts
 127.0.0.1 app.com
 127.0.0.1 www.app.com
 127.0.0.1 backoffice.app.com
