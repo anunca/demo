@@ -76,3 +76,7 @@ The repository includes a lightweight GitHub Actions workflow that checks whites
 ## Modernization
 
 This repository contains experiments created over several years. Modernization is intentionally incremental so each lab remains understandable and independently runnable. Current priorities are Compose v2 consistency, maintained container images, safer defaults, reproducible configuration, CI validation, and clearer documentation.
+
+## Security
+
+Repository have dependabot checks [doc](https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference#package-ecosystem-)
