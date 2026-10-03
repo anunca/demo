@@ -1,15 +1,17 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: /
+    directory: /github-release
     schedule:
       interval: weekly
   - package-ecosystem: composer
-    directory: /
+    directory: /github-release/src
     schedule:
       interval: weekly
   - package-ecosystem: pip
-    directory: /
+    directories:
+      - /fastapi-elasticsearch/src
+      - /python-uvicorn/src
     schedule:
       interval: weekly
   - package-ecosystem: github-actions
@@ -17,6 +19,27 @@ updates:
     schedule:
       interval: monthly
   - package-ecosystem: docker
-    directory: /
+    directories:
+      - /argocd
+      - /certbot
+      - /docker/buildx
+      - /efk
+      - /fastapi-elasticsearch
+      - /ftp/pure-ftpd
+      - /ftp/vsftpd
+      - /github-release
+      - /haproxy
+      - /letsencrypt
+      - /metasploit
+      - /nfs
+      - /nmap
+      - /openssh
+      - /python-uvicorn
+      - /rust
+      - /vscode-php
+      - /web-server/apache
+      - /web-server/caddy
+      - /web-server/nginx-httpd-ssl
+      - /web-server/nginx-ssl
     schedule:
       interval: monthly
