@@ -40,7 +40,6 @@ docker compose config
 | Application | [FastAPI + Elasticsearch](./fastapi-elasticsearch/README.md) | Run a FastAPI service backed by Elasticsearch |
 | Networking | [Pure-FTPd](./ftp/pure-ftpd/README.md) | Run a Pure-FTPd server |
 | Networking | [vsftpd](./ftp/vsftpd/README.md) | Run a vsftpd server |
-| Automation | [GitHub cron](./github-cron/README.md) | Experiment with scheduled GitHub automation |
 | Automation | [GitHub release](./github-release/README.md) | Create tags and release packages |
 | Proxy / LB | [HAProxy](./haproxy/README.md) | Load balance HTTP traffic |
 | TLS | [Let's Encrypt](./letsencrypt/README.md) | Configure nginx with Let's Encrypt certificates |

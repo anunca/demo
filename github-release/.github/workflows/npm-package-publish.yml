@@ -1,0 +1,75 @@
+name: NPM Package Publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-26.04
+
+    # env:
+    #   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Extract release tag name
+        run: echo "RELEASE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Increment package.json
+        run: |
+          VERSION=$(npm version "${{ env.RELEASE_TAG }}" --no-git-tag-version)
+          VERSION=$(echo ${VERSION} | cut -c 2-)
+          echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Update package.json
+        run: |
+          VERSION=$(echo "${{ env.PACKAGE_VERSION }}")
+          jq ".version = \"${VERSION}\"" package.json > package.tmp.json && mv package.tmp.json package.json
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Publish to GitHub Packages
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit push package.json to branch main
+        if: success()
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git checkout main
+          git add package.json
+          git commit -m "chore: update package version to ${{ env.PACKAGE_VERSION }}"
+          git push origin main
+
+      # - name: Notify Teams on Success
+      #   if: success()
+      #   uses: jdcargile/ms-teams-notification@v1.4
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+      #     notification-summary: The NPM package has been successfully published. 
+      #     notification-color: 28a745
+
+      # - name: Notify Teams on Failure
+      #   if: failure()
+      #   uses: jdcargile/ms-teams-notification@v1.4
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+      #     notification-summary: There was an error while publishing the NPM package. 
+      #     notification-color: dc3545
