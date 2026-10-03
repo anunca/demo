@@ -1,5 +1,5 @@
 elasticsearch==9.5.1
-fastapi==0.141.1
+fastapi==0.142.2
 fastapi-cli==0.0.32
 pydantic==2.13.5
 xmltodict==1.0.4
